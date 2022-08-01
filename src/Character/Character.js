@@ -17,18 +17,19 @@ export class Character{
     }
 
     changeDirection = (direction)=>{
+        //please put them into constants
         switch (direction){
             case (Direction.Up):
-                this.imageElement.src = '../img/Back Stand.png'
+                this.imageElement.src = '../img/BackStand.png'
                 break
             case (Direction.Down):
-                this.imageElement.src = '../img/Front Stand.png'
+                this.imageElement.src = '../img/FrontStand.png'
                 break
             case (Direction.Left):
-                this.imageElement.src = '../img/Left Stand.png'
+                this.imageElement.src = '../img/LeftStand.png'
                 break
             case (Direction.Right):
-                this.imageElement.src = '../img/Right Stand.png'
+                this.imageElement.src = '../img/RightStand.png'
                 break
         }
     }
