@@ -1,6 +1,6 @@
 export const ComponentConstants = {
-    DEFAULT_BACKGROUND_IMG : '../../img/PalletTown.png',
-    DEFAULT_CHARACTER_IMG:'../../img/FrontStand.png',
+    DEFAULT_BACKGROUND_IMG : 'img/PalletTown.png',
+    DEFAULT_CHARACTER_IMG:'img/FrontStand.png',
     CANVAS_UNIT :32,
     CANVAS_WIDTH_DEFAULT:1280,
     CANVAS_HEIGHT_DEFAULT:640,

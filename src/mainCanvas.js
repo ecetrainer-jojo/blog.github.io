@@ -28,7 +28,7 @@ export const DrawGameContent = (imageSrc)=>{
     mapImage.src = imageSrc
 
     const playerImage = new Image()
-    playerImage.src = '../img/Front Stand.png'
+    playerImage.src = 'img/Front Stand.png'
     let character
     let backgroud
     mapImage.onload = ()=>{
