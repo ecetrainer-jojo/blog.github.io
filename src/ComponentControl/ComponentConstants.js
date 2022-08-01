@@ -1,4 +1,3 @@
-
 export const ComponentConstants = {
     DEFAULT_BACKGROUND_IMG : '../../img/Pallet Town.png',
     DEFAULT_CHARACTER_IMG:'../../img/Front Stand.png',

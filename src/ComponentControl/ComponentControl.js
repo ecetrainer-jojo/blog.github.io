@@ -3,6 +3,7 @@ import { Character } from '../Character/Character.js'
 import {ComponentConstants as constant} from './ComponentConstants.js'
 export class ComponentController{
     constructor(){
+        console.log("COmponentConrtoller constructs")
         this.canvasCxt = document.querySelector('canvas')?.getContext('2d')
         this.background = undefined
         this.character = undefined
@@ -39,6 +40,7 @@ export class ComponentController{
     }
 
     async loadImage(imageUrl) {
+        console.log(imageUrl+" start loading")
         let img;
         const imageLoadPromise = new Promise(resolve => {
             img = new Image();

@@ -5,6 +5,7 @@ import { ComponentController } from './ComponentControl/ComponentControl.js'
 import { MotionController } from './MotionControl/MotionControl.js'
 
 export const canvasInit = ()=>{
+    console.log("canvas init start")
     //get the canvas object
     const canvas = document.querySelector('canvas')
     if(canvas) {
@@ -15,6 +16,7 @@ export const canvasInit = ()=>{
 }
 
 export const ProcessContent = async()=>{
+    console.log("content Process Start")
     const componentController = new ComponentController()
     await componentController.initialize()
     const motionController = new MotionController(componentController.getCharacter(),componentController.getBackground())
