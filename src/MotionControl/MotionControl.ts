@@ -9,7 +9,7 @@ export class MotionController{
     background:Background
     mapX:number
     mapY:number
-    backgroundAction:Record<string, Boolean> = {
+    backgroundAction:Record<string, boolean> = {
         up:true,
         down:true,
         left:true,

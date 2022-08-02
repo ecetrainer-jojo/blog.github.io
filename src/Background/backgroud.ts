@@ -15,7 +15,7 @@ export class Background{
 
     //extract the collsion Map, targeted collsion
     extractCollsionMap = ()=> {
-        let collisionArray:number[][] = new Array()
+        const collisionArray:number[][] = []
         const rawCollsion = (this.collisionMap.layers as Array<mapLayer>).filter(element => element.name==='Collision')[0].data
         //please change that later
         for(let i=0; i<rawCollsion.length;i+=50){

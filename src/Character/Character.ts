@@ -23,7 +23,7 @@ export class Character{
     }
 
     //vision control and picture switch
-    changeDirection = (direction:Object)=>{
+    changeDirection = (direction:string)=>{
         //please put them into constants
         switch (direction){
             case (Direction.Up):

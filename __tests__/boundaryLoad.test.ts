@@ -3,7 +3,7 @@ import { mapLayer } from "../src/ComponentControl/ComponentConstants";
 
 describe('Testing extract the boundary info from the json file', function() {
     it('load the data from json file', ()=>{
-      let collisionArray:number[][] = new Array()
+      const collisionArray:number[][] = []
       const rawCollsion = (collisionMap.layers as Array<mapLayer>).filter(element => element.name==='Collision')[0].data
       //please change that later
       for(let i=0; i<rawCollsion.length;i+=50){
