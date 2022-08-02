@@ -1,11 +1,14 @@
 import { Background } from '../Background/backgroud'
 import { Character } from '../Character/Character'
 import {Direction} from './MotionConstants'
+import {ComponentConstants as constant} from '../ComponentControl/ComponentConstants'
 //Motion controller module to control a character motion on a map
 export class MotionController{
     enable:boolean
     character:Character
     background:Background
+    mapX:number
+    mapY:number
     backgroundAction:Record<string, Boolean> = {
         up:true,
         down:true,
@@ -21,7 +24,9 @@ export class MotionController{
     //vision control for moving character and background, from perspective of character
     moveUp = ()=>{
         this.character.changeDirection(Direction.Up)
+        if(this.checkCollsion(this.mapX,this.mapY-1)) return
         //check for collsion TDD
+        this.mapY-=1
         if(this.character.yEquiv() && (this.backgroundAction).up){
             //In this case backrgound is allowed to move down
             if(!this.background.moveDown()){
@@ -38,6 +43,8 @@ export class MotionController{
 
     moveDown = ()=>{
         this.character.changeDirection(Direction.Down)
+        if(this.checkCollsion(this.mapX,this.mapY+1)) return
+        this.mapY+=1
         //check for collsion TDD
         if(this.character.yEquiv() && this.backgroundAction.down){
             //In this case backrgound is allowed to move down
@@ -55,6 +62,8 @@ export class MotionController{
 
     moveLeft = ()=>{
         this.character.changeDirection(Direction.Left)
+        if(this.checkCollsion(this.mapX-1,this.mapY)) return
+        this.mapX-=1
         //check for collsion TDD
         if(this.character.xEquiv() && this.backgroundAction.left){
             //In this case backrgound is allowed to move down
@@ -72,6 +81,8 @@ export class MotionController{
 
     moveRight = ()=>{
         this.character.changeDirection(Direction.Right)
+        if(this.checkCollsion(this.mapX+1,this.mapY)) return
+        this.mapX+=1
         //check for collsion TDD
         if(this.character.xEquiv() && this.backgroundAction.right){
             //In this case backrgound is allowed to move down
@@ -103,17 +114,25 @@ export class MotionController{
             else if(event.key==='d'||event.key === 'ArrowRight'){
                 this.moveRight()
             }
-            console.log(this.backgroundAction,this.character.xEquiv(),this.character.yEquiv())
         })
     }
 
+    checkCollsion = (currX:number, currY:number)=>{
+        const backgroundCollision = this.background.extractCollsionMap()
+        return backgroundCollision[currY][currX]!=0 ||
+        backgroundCollision[currY][currX+1]!=0 ||
+        backgroundCollision[currY+1][currX+1]!=0 ||
+        backgroundCollision[currY+1][currX]!=0 
+    }
+
     constructor(character:Character,background:Background){
-        console.log(character)
-        console.log(background)
         //control the on/off
         this.enable = true
+        //get the required element
         this.character = character
         this.background = background
+        this.mapX = -1*constant.INIT_PALLET_X/32+constant.INIT_CHARACTER_X/32
+        this.mapY = -1*constant.INIT_PALLET_Y/32+constant.INIT_CHARACTER_Y/32
         //start the eventlistener for keypressing
         this.initializeListener()
     } 

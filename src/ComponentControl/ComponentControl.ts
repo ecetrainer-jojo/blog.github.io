@@ -1,20 +1,23 @@
 import { Background } from '../Background/backgroud'
 import { Character } from '../Character/Character'
 import {ComponentConstants as constant} from './ComponentConstants'
+
 export class ComponentController{
     canvasCxt:CanvasRenderingContext2D
     background:Background
     character:Character
+
     constructor(){
         console.log("COmponentConrtoller constructs")
         this.canvasCxt = document.querySelector('canvas')!.getContext('2d')!
-        //this.blockInfo = require(constant.PALLET_TOWN_RESOURCE)
     }
 
      initialize = async ()=>{
         this.background = new Background(constant.INIT_PALLET_X,
             constant.INIT_PALLET_Y,
-            await this.loadImage(constant.DEFAULT_BACKGROUND_IMG))
+            await this.loadImage(constant.DEFAULT_BACKGROUND_IMG),
+            constant.PALLET_TOWN_RESOURCE
+            )
             
         this.character = new Character(constant.INIT_CHARACTER_X,
             constant.INIT_CHARACTER_Y,

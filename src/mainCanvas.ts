@@ -17,6 +17,7 @@ export const ProcessContent = async()=>{
     console.log("content Process Start")
     const componentController = new ComponentController()
     await componentController.initialize()
+    console.log(componentController.getBackground().extractCollsionMap())
     const motionController = new MotionController(componentController.getCharacter(),componentController.getBackground())
 }
 

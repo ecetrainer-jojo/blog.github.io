@@ -22,6 +22,7 @@ export class Character{
         canvasCxt.drawImage(this.imageElement,this.xPos,this.yPos)
     }
 
+    //vision control and picture switch
     changeDirection = (direction:Object)=>{
         //please put them into constants
         switch (direction){
@@ -40,6 +41,9 @@ export class Character{
         }
     }
 
+
+
+    //Motion related
     xEquiv = ()=> this.xPos===this.originX
     yEquiv = ()=> this.yPos===this.originY
 
