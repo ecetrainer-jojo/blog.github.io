@@ -2,7 +2,7 @@ import * as PalletTownJson from '../../resources/PalletTown.json'
 
 export const ComponentConstants = {
     DEFAULT_BACKGROUND_IMG : 'img/PalletTown.png',
-    DEFAULT_CHARACTER_IMG:'img/FrontStand.png',
+    DEFAULT_CHARACTER_IMG:'img/FrontWalk.png',
     PALLET_TOWN_RESOURCE: PalletTownJson,
     CANVAS_UNIT :32,
     INIT_PALLET_X :-6 * 32,

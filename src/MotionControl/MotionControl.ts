@@ -102,16 +102,19 @@ export class MotionController{
         window.addEventListener('keydown',(event) => {
             if(!this.enable) return
             if(event.key==='w'||event.key === 'ArrowUp'){
-                this.moveUp()
-                
+                this.character.setEnableWalk()
+                this.moveUp()  
             }
             else if(event.key==='s'||event.key === 'ArrowDown'){
+                this.character.setEnableWalk()
                 this.moveDown()
             }
             else if(event.key==='a'||event.key === 'ArrowLeft'){
+                this.character.setEnableWalk()
                 this.moveLeft()
             }
             else if(event.key==='d'||event.key === 'ArrowRight'){
+                this.character.setEnableWalk()
                 this.moveRight()
             }
         })
