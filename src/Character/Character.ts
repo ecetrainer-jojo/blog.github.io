@@ -79,7 +79,7 @@ export class Character{
                 this.imageElement.src = 'img/FrontWalk.png'
                 break
             case (Direction.Left):
-                this.imageElement.src = 'img/Leftwalk.png'
+                this.imageElement.src = 'img/LeftWalk.png'
                 break
             case (Direction.Right):
                 this.imageElement.src = 'img/RightWalk.png'
