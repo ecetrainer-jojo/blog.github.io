@@ -26,7 +26,7 @@ export class Character{
         this.originY = yPos
         this.frameNum = 4
         this.currFrame = 0
-        this.waitFrame = 10
+        this.waitFrame = 5
     }
 
     draw = (canvasCxt:CanvasRenderingContext2D)=>{
@@ -43,7 +43,7 @@ export class Character{
         )
         //accumulate the frame
         this.frameControl()
-        if(this.currFrame==0 && this.waitFrame==10 && this.enableWalk){
+        if(this.currFrame==0 && this.waitFrame==5 && this.enableWalk){
             this.enableWalk=false
         }
     }
@@ -64,7 +64,7 @@ export class Character{
             else {
                 this.currFrame = 0
             }
-            this.waitFrame=10
+            this.waitFrame=5
         }
     }
 

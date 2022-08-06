@@ -2,10 +2,12 @@ import { Background } from '../Background/backgroud'
 import { Character } from '../Character/Character'
 import {Direction} from './MotionConstants'
 import {ComponentConstants as constant} from '../ComponentControl/ComponentConstants'
+import { DirectionKey } from '../DirectionalKey/DirectionKey'
 //Motion controller module to control a character motion on a map
 export class MotionController{
     enable:boolean
     character:Character
+    directionKey:DirectionKey
     background:Background
     mapX:number
     mapY:number
@@ -98,6 +100,34 @@ export class MotionController{
         }
     }
 
+    iniializeMouseTracker(){
+        document.querySelector('canvas').addEventListener('mousedown',event=>{
+            if(!this.enable) return
+            switch(this.directionKey.checkKey(event.clientX,event.clientY)){
+                case(Direction.Up):{
+                    this.character.setEnableWalk()
+                    this.moveUp()  
+                    break;
+                }
+                case(Direction.Down):{
+                    this.character.setEnableWalk()
+                    this.moveDown()
+                    break;
+                }
+                case(Direction.Left):{
+                    this.character.setEnableWalk()
+                    this.moveLeft()  
+                    break;
+                }
+                case(Direction.Right):{
+                    this.character.setEnableWalk()
+                    this.moveRight() 
+                    break;
+                }
+            }
+        })
+    }
+
     initializeListener(){
         window.addEventListener('keydown',(event) => {
             if(!this.enable) return
@@ -128,15 +158,18 @@ export class MotionController{
         backgroundCollision[currY+1][currX]!=0 
     }
 
-    constructor(character:Character,background:Background){
+    constructor(character:Character,background:Background,directionKey:DirectionKey){
         //control the on/off
         this.enable = true
         //get the required element
         this.character = character
         this.background = background
+        this.directionKey = directionKey
         this.mapX = -1*constant.INIT_PALLET_X/32+constant.INIT_CHARACTER_X/32
         this.mapY = -1*constant.INIT_PALLET_Y/32+constant.INIT_CHARACTER_Y/32
+        
         //start the eventlistener for keypressing
         this.initializeListener()
+        this.iniializeMouseTracker()
     } 
 }

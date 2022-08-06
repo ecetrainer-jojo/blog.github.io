@@ -21,7 +21,7 @@
     "webpack-cli": "^4.10.0"
   },
   "scripts": {
-    "package-dev": "yarn webpack ./src/index.ts --mode=development",
+    "build": "yarn webpack ./src/index.ts --mode=development",
     "test": "jest",
     "lint": "eslint . --ext .ts"
   }

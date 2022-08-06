@@ -1,15 +1,18 @@
 import { Background } from '../Background/backgroud'
 import { Character } from '../Character/Character'
+import { DirectionKey } from '../DirectionalKey/DirectionKey'
 import {ComponentConstants as constant} from './ComponentConstants'
 
 export class ComponentController{
     canvasCxt:CanvasRenderingContext2D
     background:Background
     character:Character
+    directionKey:DirectionKey
 
     constructor(){
         console.log("COmponentConrtoller constructs")
-        this.canvasCxt = document.querySelector('canvas')!.getContext('2d')!
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.canvasCxt = document.querySelector('canvas').getContext('2d')!
     }
 
      initialize = async ()=>{
@@ -23,11 +26,15 @@ export class ComponentController{
             constant.INIT_CHARACTER_Y,
             await this.loadImage(constant.DEFAULT_CHARACTER_IMG))
 
+        
+        this.directionKey = new DirectionKey(constant.INIT_DIRECTION_KEY_X,
+            constant.INIT_DIRECTION_KEY_Y,
+            await this.loadImage(constant.DEFAULT_ARROW_KEY_IMG))
+
         this.animate()
     }
 
     async loadImage(imageUrl:string) {
-        console.log(imageUrl+" start loading")
         let img:HTMLImageElement = new Image()
         const imageLoadPromise = new Promise(resolve => {
             img = new Image()
@@ -43,8 +50,6 @@ export class ComponentController{
         window.requestAnimationFrame(this.animate)
         this.background.draw(this.canvasCxt)
         this.character.draw(this.canvasCxt)
+        this.directionKey.draw(this.canvasCxt)
     }
-
-    getCharacter = ()=> this.character
-    getBackground = ()=>this.background
 }
