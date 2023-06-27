@@ -30,7 +30,7 @@ export class MotionController{
         this.character.changeDirection(Direction.Up)
         // check whether any dialogue will be triggered
         if(this.checkDialogueHandler(this.mapX,this.mapY-1)) return
-        if(this.checkCollsion(this.mapX,this.mapY-1)) return
+        if(this.background.checkCollsion(this.mapX,this.mapY-1)) return
         //check for collsion TDD
         this.mapY-=1
         if(this.character.yEquiv() && (this.backgroundAction).up){
@@ -49,7 +49,7 @@ export class MotionController{
 
     moveDown = ()=>{
         this.character.changeDirection(Direction.Down)
-        if(this.checkCollsion(this.mapX,this.mapY+1)) return
+        if(this.background.checkCollsion(this.mapX,this.mapY+1)) return
         this.mapY+=1
         //check for collsion TDD
         if(this.character.yEquiv() && this.backgroundAction.down){
@@ -68,7 +68,7 @@ export class MotionController{
 
     moveLeft = ()=>{
         this.character.changeDirection(Direction.Left)
-        if(this.checkCollsion(this.mapX-1,this.mapY)) return
+        if(this.background.checkCollsion(this.mapX-1,this.mapY)) return
         this.mapX-=1
         //check for collsion TDD
         if(this.character.xEquiv() && this.backgroundAction.left){
@@ -87,9 +87,8 @@ export class MotionController{
 
     moveRight = ()=>{
         this.character.changeDirection(Direction.Right)
-        if(this.checkCollsion(this.mapX+1,this.mapY)) return
+        if(this.background.checkCollsion(this.mapX+1,this.mapY)) return
         this.mapX+=1
-        //check for collsion TDD
         if(this.character.xEquiv() && this.backgroundAction.right){
             //In this case backrgound is allowed to move down
             if(!this.background.moveLeft()){
@@ -134,6 +133,7 @@ export class MotionController{
 
     initializeListener(){
         window.addEventListener('keydown',(event) => {
+            console.log(`Coordinate -> ${this.mapX}, ${this.mapY}`)
             if(event.key=== 'Enter' && this.textBoard.enableDialogue === true){
                 // when no remaining text to present, re-enable
                 if(this.textBoard.enterForNextText()){
@@ -160,24 +160,11 @@ export class MotionController{
         })
     }
 
-    checkCollsion = (currX:number, currY:number)=>{
-        const backgroundCollision = this.background.extractCollsionMap()
-        return backgroundCollision[currY][currX]!=0 ||
-        backgroundCollision[currY][currX+1]!=0 ||
-        backgroundCollision[currY+1][currX+1]!=0 ||
-        backgroundCollision[currY+1][currX]!=0 
-    }
-
-    checkDialogue = (currX:number, currY:number)=>{
-        const backgroundDialogue = this.background.extractdialogueMap()
-        return backgroundDialogue[currY][currX]!=0 ||
-        backgroundDialogue[currY][currX+1]!=0 ||
-        backgroundDialogue[currY+1][currX+1]!=0 ||
-        backgroundDialogue[currY+1][currX]!=0 
-    }
-
     checkDialogueHandler = (currX:number, currY:number)=>{
-        if(this.checkDialogue(currX,currY)){
+        console.log("Entering the dialogue handler")
+        const checkDialogueResult = this.background.checkDialogue(currX,currY)
+        if(checkDialogueResult!=null){
+            console.log(`Dialogue ${checkDialogueResult} will be triggered`)
             this.textBoard.setInputText("Welcome to this Town. Please enjoy your time here and get to know more about me!")
             this.disable()
             this.textBoard.enableDialogue = true

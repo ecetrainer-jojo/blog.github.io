@@ -30,7 +30,7 @@ export interface mapSetting {
 
 //record the types for the extracted layer info from json
 export interface mapLayer {
-    data: number[];
+    data: number[],
     height: number,
     id: number,
     name: string,
@@ -38,6 +38,18 @@ export interface mapLayer {
     type: string,
     visible: boolean,
     width: number,
+    x: number,
+    y: number
+}
+
+//record the types for the group layers info from json
+export interface mapLayers {
+    id: number,
+    layers: mapLayer[],
+    name: string,
+    opacity: number,
+    type: string,
+    visible: boolean,
     x: number,
     y: number
 }

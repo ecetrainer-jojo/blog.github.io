@@ -1,38 +1,40 @@
-import { ComponentConstants, mapLayer} from '../ComponentControl/ComponentConstants'
+import { ComponentConstants, mapLayer, mapLayers} from '../ComponentControl/ComponentConstants'
 import { CANVAS_HEIGHT_DEFAULT, CANVAS_WIDTH_DEFAULT } from '../constants'
+
+export type Coordinate = [number,number]
 
 export class Background{
     xPos: number
     yPos: number
     imageElement:HTMLImageElement
-    collisionMap:Record<string,unknown>
-    constructor(xPos:number,yPos:number,imageElement:HTMLImageElement, collisionMap:Record<string,unknown> ){
-        this.xPos = xPos
-        this.yPos = yPos
-        this.imageElement = imageElement
-        this.collisionMap = collisionMap
-    }
+    // each background have their own layer settings
+    collisionArray:Coordinate[] = []
+    dialogueMap:Map<number,Coordinate[]>
 
     //extract the collsion Map, targeted collsion
-    extractCollsionMap = ()=> {
-        const collisionArray:number[][] = []
-        const rawCollsionData = (this.collisionMap.layers as Array<mapLayer>).filter(element => element.name==='Collision')[0]
-        //please change that later
-        for(let i=0; i<rawCollsionData.data.length;i+=50){
-            collisionArray.push(rawCollsionData.data.slice(i,50+i))
+    extractCollsionMap = (backgroundMapInfo:Record<string,unknown>)=> {
+        const rawCollsionData = (backgroundMapInfo.layers as Array<mapLayer>).filter(element => element.name==='Collision')[0]
+        for(let i=0; i<rawCollsionData.data.length;i++){
+            if(rawCollsionData.data[i]!=0){
+                this.collisionArray.push([Math.trunc(i / rawCollsionData.width), i % rawCollsionData.width])
+            }
         }
-        return collisionArray
     }
 
-    //extract the collsion Map, targeted collsion
-    extractdialogueMap = () => {
-        const dialogueArray:number[][] = []
-        const rawDialogue = (this.collisionMap.layers as Array<mapLayer>).filter(element => element.name==='Dialogue')[0]
-        //please change that later
-        for(let i=0; i<rawDialogue.data.length;i+=rawDialogue.width){
-            dialogueArray.push(rawDialogue.data.slice(i,rawDialogue.width+i))
-        }
-        return dialogueArray
+    //extract the dialogueMap
+    // design a data structure -> map(number, listof(pairNumbers)
+    extractdialogueMap = (backgroundMapInfo:Record<string,unknown>) => {
+        const rawDialogue = (backgroundMapInfo.layers as Array<mapLayers>).filter(element => element.name==='Dialogue_Group')[0].layers
+        rawDialogue.forEach(dialogueLayer => {
+          const layerKey = Number(dialogueLayer.name)
+          const diagloueBlock: Coordinate[] = []
+          for(let i=0; i<dialogueLayer.data.length;i++){
+            if(dialogueLayer.data[i]!=0){
+              diagloueBlock.push([Math.trunc(i / dialogueLayer.width), i % dialogueLayer.width])
+            }
+          }
+          this.dialogueMap.set(layerKey,diagloueBlock)
+        })
     }
 
     //content rendering
@@ -70,5 +72,44 @@ export class Background{
             return true
         }
         return false
+    }
+
+
+    // true -> it has a collision
+    checkCollsion = (currX:number, currY:number)=>{
+        for(let i=0; i< this.collisionArray.length; i++){
+            const collisionItem = this.collisionArray[i]
+            if((collisionItem[0]===currY && collisionItem[1]===currX) ||
+            (collisionItem[0]===currY && collisionItem[1]===currX+1) ||
+            (collisionItem[0]===currY+1 && collisionItem[1]===currX) ||
+            (collisionItem[0]===currY+1 && collisionItem[1]===currX+1)){
+                console.log("get trapped with a collision")
+                return true
+            }
+        }
+        console.log("No collision collision")
+        return false
+    }
+
+
+    checkDialogue = (currX:number, currY:number): number | null => {
+        let keyResult: number | null = null
+        this.dialogueMap.forEach((value, key) => {
+            value.forEach(coordinate => {
+                if(coordinate[0] === currY && coordinate[1]===currX) {
+                    keyResult = key
+                }
+            })
+        })
+        return keyResult
+    }
+
+    constructor(xPos:number,yPos:number,imageElement:HTMLImageElement, backgroundMapInfo:Record<string,unknown> ){
+        this.xPos = xPos
+        this.yPos = yPos
+        this.imageElement = imageElement
+        this.dialogueMap = new Map<number,Coordinate[]>()
+        this.extractCollsionMap(backgroundMapInfo)
+        this.extractdialogueMap(backgroundMapInfo)
     }
 }
