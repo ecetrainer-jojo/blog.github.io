@@ -16,12 +16,23 @@ export class Background{
     //extract the collsion Map, targeted collsion
     extractCollsionMap = ()=> {
         const collisionArray:number[][] = []
-        const rawCollsion = (this.collisionMap.layers as Array<mapLayer>).filter(element => element.name==='Collision')[0].data
+        const rawCollsionData = (this.collisionMap.layers as Array<mapLayer>).filter(element => element.name==='Collision')[0]
         //please change that later
-        for(let i=0; i<rawCollsion.length;i+=50){
-            collisionArray.push(rawCollsion.slice(i,50+i))
+        for(let i=0; i<rawCollsionData.data.length;i+=50){
+            collisionArray.push(rawCollsionData.data.slice(i,50+i))
         }
         return collisionArray
+    }
+
+    //extract the collsion Map, targeted collsion
+    extractdialogueMap = () => {
+        const dialogueArray:number[][] = []
+        const rawDialogue = (this.collisionMap.layers as Array<mapLayer>).filter(element => element.name==='Dialogue')[0]
+        //please change that later
+        for(let i=0; i<rawDialogue.data.length;i+=rawDialogue.width){
+            dialogueArray.push(rawDialogue.data.slice(i,rawDialogue.width+i))
+        }
+        return dialogueArray
     }
 
     //content rendering

@@ -3,12 +3,14 @@ import { Character } from '../Character/Character'
 import {Direction} from './MotionConstants'
 import {ComponentConstants as constant} from '../ComponentControl/ComponentConstants'
 import { DirectionKey } from '../DirectionalKey/DirectionKey'
+import { TextBoard } from '../TextBoard'
 //Motion controller module to control a character motion on a map
 export class MotionController{
     enable:boolean
     character:Character
     directionKey:DirectionKey
     background:Background
+    textBoard:TextBoard
     mapX:number
     mapY:number
     backgroundAction:Record<string, boolean> = {
@@ -26,6 +28,8 @@ export class MotionController{
     //vision control for moving character and background, from perspective of character
     moveUp = ()=>{
         this.character.changeDirection(Direction.Up)
+        // check whether any dialogue will be triggered
+        if(this.checkDialogueHandler(this.mapX,this.mapY-1)) return
         if(this.checkCollsion(this.mapX,this.mapY-1)) return
         //check for collsion TDD
         this.mapY-=1
@@ -130,6 +134,12 @@ export class MotionController{
 
     initializeListener(){
         window.addEventListener('keydown',(event) => {
+            if(event.key=== 'Enter' && this.textBoard.enableDialogue === true){
+                // when no remaining text to present, re-enable
+                if(this.textBoard.enterForNextText()){
+                    this.enable = true
+                }
+            }
             if(!this.enable) return
             if(event.key==='w'||event.key === 'ArrowUp'){
                 this.character.setEnableWalk()
@@ -158,13 +168,32 @@ export class MotionController{
         backgroundCollision[currY+1][currX]!=0 
     }
 
-    constructor(character:Character,background:Background,directionKey:DirectionKey){
-        //control the on/off
+    checkDialogue = (currX:number, currY:number)=>{
+        const backgroundDialogue = this.background.extractdialogueMap()
+        return backgroundDialogue[currY][currX]!=0 ||
+        backgroundDialogue[currY][currX+1]!=0 ||
+        backgroundDialogue[currY+1][currX+1]!=0 ||
+        backgroundDialogue[currY+1][currX]!=0 
+    }
+
+    checkDialogueHandler = (currX:number, currY:number)=>{
+        if(this.checkDialogue(currX,currY)){
+            this.textBoard.setInputText("Welcome to this Town. Please enjoy your time here and get to know more about me!")
+            this.disable()
+            this.textBoard.enableDialogue = true
+            return true
+        }
+        return false
+    }
+
+    constructor(character:Character,background:Background,directionKey:DirectionKey, textBoard: TextBoard){
+        //control the on/off event listener
         this.enable = true
         //get the required element
         this.character = character
         this.background = background
         this.directionKey = directionKey
+        this.textBoard = textBoard
         this.mapX = -1*constant.INIT_PALLET_X/32+constant.INIT_CHARACTER_X/32
         this.mapY = -1*constant.INIT_PALLET_Y/32+constant.INIT_CHARACTER_Y/32
         
