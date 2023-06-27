@@ -1,7 +1,7 @@
 # Dependency directories
 node_modules/
 
-#resources
-resources/
+#yarn-error
+yarn-error.log
 
 .DS_Store
