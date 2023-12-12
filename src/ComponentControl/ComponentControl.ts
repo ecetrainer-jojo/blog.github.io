@@ -3,7 +3,28 @@ import { Character } from '../Character/Character';
 import { DirectionKey } from '../DirectionalKey/DirectionKey';
 import { TextBoard } from '../TextBoard';
 import { ComponentConstants as constant } from './ComponentConstants';
+import loadImage from '../Util/imageUtil';
 
+/**
+ * The ComponentController class orchestrates the initialization and animation
+ * of various game components - Background, Character, DirectionKey, and TextBoard.
+ *
+ * It contains properties for each game component and a canvas context for rendering.
+ *
+ * The class provides methods for initialization of game components where it instantiates
+ * components, sets up their individual properties, and ties them with the necessary resources.
+ *
+ * The animate method is responsible for repeatedly rendering the game components on each
+ * animation frame, thereby driving the entire game loop.
+ *
+ * The constructor of the class sets up the canvas context
+ * where all the components will be rendered.
+ *
+ * This class essentially bridges together various game components, manages their lifecycle,
+ * and controls their render on the canvas, making it a crucial part of the game engine.
+ */
+
+// eslint-disable-next-line import/prefer-default-export
 export class ComponentController {
   canvasCxt:CanvasRenderingContext2D;
 
@@ -16,50 +37,36 @@ export class ComponentController {
   textBoard:TextBoard;
 
   constructor() {
-    console.log('ComponentController constructs');
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.canvasCxt = document.querySelector('canvas').getContext('2d')!;
   }
 
   initialize = async () => {
-    // 优化方案，每一个不同的场景都需要 新的background character 和 directional key, 需要一个
-    // constants -> contentConfig
     this.background = new Background(
       constant.INIT_PALLET_X,
       constant.INIT_PALLET_Y,
-      await this.loadImage(constant.DEFAULT_BACKGROUND_IMG),
+      await loadImage(constant.DEFAULT_BACKGROUND_IMG),
       constant.PALLET_TOWN_RESOURCE,
     );
 
     this.character = new Character(
       constant.INIT_CHARACTER_X,
       constant.INIT_CHARACTER_Y,
-      await this.loadImage(constant.DEFAULT_CHARACTER_IMG),
+      await loadImage(constant.DEFAULT_CHARACTER_IMG),
     );
 
     this.directionKey = new DirectionKey(
       constant.INIT_DIRECTION_KEY_X,
       constant.INIT_DIRECTION_KEY_Y,
-      await this.loadImage(constant.DEFAULT_ARROW_KEY_IMG),
+      await loadImage(constant.DEFAULT_ARROW_KEY_IMG),
     );
 
     this.textBoard = new TextBoard(
-      await this.loadImage(constant.DEFAULT_DIALOG_IMG),
+      await loadImage(constant.DEFAULT_DIALOG_IMG),
       this.canvasCxt,
     );
     this.animate();
   };
-
-  async loadImage(imageUrl:string) {
-    let img:HTMLImageElement = new Image();
-    const imageLoadPromise = new Promise((resolve) => {
-      img = new Image();
-      img.onload = resolve;
-      img.src = imageUrl;
-    });
-    await imageLoadPromise;
-    return img;
-  }
 
   // rendering out the pictures
   animate = () => {

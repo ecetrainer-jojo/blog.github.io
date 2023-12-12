@@ -1,5 +1,6 @@
 import * as PalletTownJson from '../../resources/tile_assets/towns/PalletTownMap.json';
 
+// eslint-disable-next-line import/prefer-default-export
 export const ComponentConstants = {
   DEFAULT_BACKGROUND_IMG: 'img/PalletTown.png',
   DEFAULT_CHARACTER_IMG: 'img/FrontWalk.png',
@@ -15,41 +16,3 @@ export const ComponentConstants = {
   INIT_DIRECTION_KEY_Y: 13 * 32,
   ARROW_KEY_SIZE: 32,
 };
-
-// trying to map every map a interface with specific settings
-export interface mapSetting {
-    BACKGROUND_IMG : string,
-    CHARACTER_IMG: string,
-    PALLET_TOWN_RESOURCE: JSON,
-    CANVAS_UNIT :number,
-    INIT_PALLET_X :number,
-    INIT_PALLET_Y :number,
-    INIT_CHARACTER_X :number,
-    INIT_CHARACTER_Y :number,
-}
-
-// record the types for the extracted layer info from json
-export interface mapLayer {
-    data: number[],
-    height: number,
-    id: number,
-    name: string,
-    opacity: number,
-    type: string,
-    visible: boolean,
-    width: number,
-    x: number,
-    y: number
-}
-
-// record the types for the group layers info from json
-export interface mapLayers {
-    id: number,
-    layers: mapLayer[],
-    name: string,
-    opacity: number,
-    type: string,
-    visible: boolean,
-    x: number,
-    y: number
-}

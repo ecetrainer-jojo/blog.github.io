@@ -1,8 +1,24 @@
-import { ComponentConstants, mapLayer, mapLayers } from '../ComponentControl/ComponentConstants';
+import { ComponentConstants } from '../ComponentControl/ComponentConstants';
 import { CANVAS_HEIGHT_DEFAULT, CANVAS_WIDTH_DEFAULT } from '../constants';
+import { MapLayer, MapLayers } from '../Models/mapLayer';
 
-export type Coordinate = [number, number]
+export type Coordinate = [number, number];
 
+/**
+ * The Background class represents the background of a game screen.
+ *
+ * It contains properties for the x and y coordinates and an image element.
+ * It also includes arrays for collision coordinates and dialogue map coordinates.
+ *
+ * The class provides methods to draw the background, move the vision on the screen,
+ * check for collisions at given coordinates, and check for dialogue triggers.
+ *
+ * It also includes methods to extract collision and dialogue maps from provided static
+ * data.
+ *
+ * This class is the primary means of navigating through the 2D grid of the game while
+ * managing collisions and dialogues.
+ */
 export class Background {
   xPos: number;
 
@@ -15,40 +31,57 @@ export class Background {
 
   dialogueMap:Map<number, Coordinate[]>;
 
-  // extract the collsion Map, targeted collsion
-  extractCollsionMap = (backgroundMapInfo:Record<string, unknown>) => {
-    const rawCollsionData = (backgroundMapInfo.layers as Array<mapLayer>).filter((element) => element.name === 'Collision')[0];
-    for (let i = 0; i < rawCollsionData.data.length; i++) {
-      if (rawCollsionData.data[i] != 0) {
-        this.collisionArray.push([Math.trunc(i / rawCollsionData.width), i % rawCollsionData.width]);
+  // extract the collision Map, targeted collision
+  /**
+   * Extracts the collision map from the given background map information.
+   * The collision map is a 2D array of coordinate pairs indicating the positions
+   * where collisions occur in the map.
+   *
+   * @param {Record<string, unknown>} backgroundMapInfo - The background map information
+   */
+  extractCollisionMap = (backgroundMapInfo:Record<string, unknown>) => {
+    const rawCollisionData = (backgroundMapInfo.layers as Array<MapLayer>).filter((element) => element.name === 'Collision')[0];
+    for (let i = 0; i < rawCollisionData.data.length; i += 1) {
+      if (rawCollisionData.data[i] !== 0) {
+        this.collisionArray.push(
+          [Math.trunc(i / rawCollisionData.width), i % rawCollisionData.width],
+        );
       }
     }
   };
 
-  // extract the dialogueMap
-  // design a data structure -> map(number, listof(pairNumbers)
-  extractdialogueMap = (backgroundMapInfo:Record<string, unknown>) => {
-    const rawDialogue = (backgroundMapInfo.layers as Array<mapLayers>).filter((element) => element.name === 'Dialogue_Group')[0].layers;
+  /**
+   * Extracts dialogue map from given background map information.
+   *
+   * @param {Record<string, unknown>} backgroundMapInfo - The background map information.
+   * @returns {void}
+   */
+  extractDialogueMap = (backgroundMapInfo:Record<string, unknown>): void => {
+    const rawDialogue = (backgroundMapInfo.layers as Array<MapLayers>).filter((element) => element.name === 'Dialogue_Group')[0].layers;
     rawDialogue.forEach((dialogueLayer) => {
       const layerKey = Number(dialogueLayer.name);
-      const diagloueBlock: Coordinate[] = [];
-      for (let i = 0; i < dialogueLayer.data.length; i++) {
-        if (dialogueLayer.data[i] != 0) {
-          diagloueBlock.push([Math.trunc(i / dialogueLayer.width), i % dialogueLayer.width]);
+      const dialogueBlock: Coordinate[] = [];
+      for (let i = 0; i < dialogueLayer.data.length; i += 1) {
+        if (dialogueLayer.data[i] !== 0) {
+          dialogueBlock.push([Math.trunc(i / dialogueLayer.width), i % dialogueLayer.width]);
         }
       }
-      this.dialogueMap.set(layerKey, diagloueBlock);
+      this.dialogueMap.set(layerKey, dialogueBlock);
     });
   };
 
-  // content rendering
+  /**
+   * Draws an image on the canvas context at a specified position.
+   *
+   * @param {CanvasRenderingContext2D} canvasCxt - The canvas context on which to draw the image.
+   */
   draw = (canvasCxt:CanvasRenderingContext2D) => {
     canvasCxt.drawImage(this.imageElement, this.xPos, this.yPos);
   };
 
   // vision control
   moveDown = () => {
-    if (this.yPos != 0) {
+    if (this.yPos !== 0) {
       this.yPos += ComponentConstants.CANVAS_UNIT;
       return true;
     }
@@ -72,29 +105,39 @@ export class Background {
   };
 
   moveRight = () => {
-    if (this.xPos != 0) {
+    if (this.xPos !== 0) {
       this.xPos += ComponentConstants.CANVAS_UNIT;
       return true;
     }
     return false;
   };
 
-  // true -> it has a collision
-  checkCollsion = (currX:number, currY:number) => {
-    for (let i = 0; i < this.collisionArray.length; i++) {
+  /**
+   * Checks if there is a collision at the specified coordinates.
+   *
+   * @param {number} currX - The current X coordinate.
+   * @param {number} currY - The current Y coordinate.
+   * @returns {boolean} - true if there is a collision, false otherwise.
+   */
+  checkCollision = (currX:number, currY:number): boolean => {
+    for (let i = 0; i < this.collisionArray.length; i += 1) {
       const collisionItem = this.collisionArray[i];
       if ((collisionItem[0] === currY && collisionItem[1] === currX)
             || (collisionItem[0] === currY && collisionItem[1] === currX + 1)
             || (collisionItem[0] === currY + 1 && collisionItem[1] === currX)
             || (collisionItem[0] === currY + 1 && collisionItem[1] === currX + 1)) {
-        console.log('get trapped with a collision');
         return true;
       }
     }
-    console.log('No collision collision');
     return false;
   };
 
+  /**
+   * Searches for a key in a dialogue map that matches the given coordinates.
+   * @param {number} currX - The current x-coordinate to match.
+   * @param {number} currY - The current y-coordinate to match.
+   * @returns {number | null} - The key that matches the coordinates, or null if no match is found.
+   */
   checkDialogue = (currX:number, currY:number): number | null => {
     let keyResult: number | null = null;
     this.dialogueMap.forEach((value, key) => {
@@ -107,12 +150,17 @@ export class Background {
     return keyResult;
   };
 
-  constructor(xPos:number, yPos:number, imageElement:HTMLImageElement, backgroundMapInfo:Record<string, unknown>) {
+  constructor(
+    xPos:number,
+    yPos:number,
+    imageElement:HTMLImageElement,
+    backgroundMapInfo:Record<string, unknown>,
+  ) {
     this.xPos = xPos;
     this.yPos = yPos;
     this.imageElement = imageElement;
     this.dialogueMap = new Map<number, Coordinate[]>();
-    this.extractCollsionMap(backgroundMapInfo);
-    this.extractdialogueMap(backgroundMapInfo);
+    this.extractCollisionMap(backgroundMapInfo);
+    this.extractDialogueMap(backgroundMapInfo);
   }
 }
