@@ -1,4 +1,4 @@
-import * as PalletTownJson from '../../resources/PalletTown.json'
+import * as PalletTownJson from '../../resources/tile_assets/towns/PalletTownMap.json'
 
 export const ComponentConstants = {
     DEFAULT_BACKGROUND_IMG : 'img/PalletTown.png',

@@ -1,4 +1,4 @@
-import * as collisionMap from "../resources/PalletTown.json"
+import * as collisionMap from "../resources/tile_assets/towns/PalletTownMap.json"
 import { Coordinate } from "../src/Background/backgroud";
 import { mapLayer, mapLayers } from "../src/ComponentControl/ComponentConstants";
 
@@ -17,10 +17,8 @@ describe('Testing extract the boundary info from the json file', function() {
     })
 
     it('load the diagloue boundaries from json file', ()=>{
-      const dialogueArray:number[][] = []
       const rawDialogue = (collisionMap.layers as Array<mapLayers>).filter(element => element.name==='Dialogue_Group')[0].layers
       rawDialogue.forEach(dialogueLayer => {
-        const layerKey = Number(dialogueLayer.name)
         const diagloueBlock: Coordinate[] = []
         for(let i=0; i<dialogueLayer.data.length;i++){
           if(dialogueLayer.data[i]!=0){
