@@ -4,7 +4,31 @@ import { Direction } from './MotionConstants';
 import { ComponentConstants as constant } from '../ComponentControl/ComponentConstants';
 import { DirectionKey } from '../DirectionalKey/DirectionKey';
 import { TextBoard } from '../TextBoard';
-// Motion controller module to control a character motion on a map
+/* eslint-disable no-mixed-operators */
+
+/**
+ * The MotionController class orchestrates the motion aspects in the game.
+ * It manages movements (both direction and pace) of a central character
+ * and its position within a background.
+ *
+ * It contains properties to regulate the movement, references
+ * to the Character, Background, DirectionKey, and TextBoard objects.
+ * The controller also maintains a state that permits or prohibits the character's movement.
+ *
+ * The class provides methods to initialize mouse tracking and keyboard
+ * listening, manage direction-based movements,
+ * evaluate dialogue interactions on movement, and to disable movements.
+ * Various movement methods (moveUp, moveDown, moveLeft, moveRight) control the character
+ * direction as well as manage the corresponding visual and collider aspects with the background.
+ *
+ * The constructor of the class sets the initial state of movement enablement,
+ * and an initialize function is used to link the controller with the
+ * characters, background, and controls it will manage.
+ *
+ * This class behaves like a hub for controlling and coordinating the
+ * user-interactive motion aspects within the game.
+ */
+// eslint-disable-next-line import/prefer-default-export
 export class MotionController {
   enable:boolean;
 
@@ -37,11 +61,11 @@ export class MotionController {
     this.character.changeDirection(Direction.Up);
     // check whether any dialogue will be triggered
     if (this.checkDialogueHandler(this.mapX, this.mapY - 1)) return;
-    if (this.background.checkCollsion(this.mapX, this.mapY - 1)) return;
-    // check for collsion TDD
+    if (this.background.checkCollision(this.mapX, this.mapY - 1)) return;
+    // check for collision TDD
     this.mapY -= 1;
     if (this.character.yEquiv() && (this.backgroundAction).up) {
-      // In this case backrgound is allowed to move down
+      // In this case background is allowed to move down
       if (!this.background.moveDown()) {
         this.backgroundAction.up = false;
         this.character.moveUp();
@@ -53,7 +77,7 @@ export class MotionController {
 
   moveDown = () => {
     this.character.changeDirection(Direction.Down);
-    if (this.background.checkCollsion(this.mapX, this.mapY + 1)) return;
+    if (this.background.checkCollision(this.mapX, this.mapY + 1)) return;
     this.mapY += 1;
     // check for collsion TDD
     if (this.character.yEquiv() && this.backgroundAction.down) {
@@ -69,11 +93,10 @@ export class MotionController {
 
   moveLeft = () => {
     this.character.changeDirection(Direction.Left);
-    if (this.background.checkCollsion(this.mapX - 1, this.mapY)) return;
+    if (this.background.checkCollision(this.mapX - 1, this.mapY)) return;
     this.mapX -= 1;
-    // check for collsion TDD
     if (this.character.xEquiv() && this.backgroundAction.left) {
-      // In this case backrgound is allowed to move down
+      // In this case background is allowed to move down
       if (!this.background.moveRight()) {
         this.backgroundAction.left = false;
         this.character.moveLeft();
@@ -85,10 +108,10 @@ export class MotionController {
 
   moveRight = () => {
     this.character.changeDirection(Direction.Right);
-    if (this.background.checkCollsion(this.mapX + 1, this.mapY)) return;
+    if (this.background.checkCollision(this.mapX + 1, this.mapY)) return;
     this.mapX += 1;
     if (this.character.xEquiv() && this.backgroundAction.right) {
-      // In this case backrgound is allowed to move down
+      // In this case background is allowed to move down
       if (!this.background.moveLeft()) {
         this.backgroundAction.right = false;
         this.character.moveRight();
@@ -122,6 +145,7 @@ export class MotionController {
           this.moveRight();
           break;
         }
+        default:
       }
     });
   }
@@ -165,7 +189,12 @@ export class MotionController {
     return false;
   };
 
-  constructor(character:Character, background:Background, directionKey:DirectionKey, textBoard: TextBoard) {
+  constructor() {
+    this.enable = true;
+  }
+
+  // eslint-disable-next-line max-len
+  initialize(character:Character, background:Background, directionKey:DirectionKey, textBoard: TextBoard) {
     // control the on/off event listener
     this.enable = true;
     // get the required element
@@ -176,7 +205,7 @@ export class MotionController {
     this.mapX = -1 * constant.INIT_PALLET_X / 32 + constant.INIT_CHARACTER_X / 32;
     this.mapY = -1 * constant.INIT_PALLET_Y / 32 + constant.INIT_CHARACTER_Y / 32;
 
-    // start the eventlistener for keypressing
+    // start the event listener for keypressing
     this.initializeListener();
     this.iniializeMouseTracker();
   }

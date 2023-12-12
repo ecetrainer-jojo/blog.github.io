@@ -1,7 +1,30 @@
 import { Direction, CANVAS_UNIT } from '../MotionControl/MotionConstants';
 
+/**
+ * The Character class represents a controllable figure on a game screen.
+ * It contains properties including the current position,
+ * the direction the character is facing, an image element
+ * and other properties related to the animation of the character's movement.
+ *
+ * The class provides methods to draw the character on a canvas context,
+ * change the direction the character is facing, and move the character
+ * in various directions.
+ *
+ * The class also provides a way to control the animation frames
+ * for creating a walking animation effect.
+ *
+ * The constructor takes in an x and y coordinate for the initial
+ * position of the character and a HTMLImageElement object which
+ * is used to draw the character.
+ *
+ * The class is mainly used for manipulating the state of the character,
+ * including its position, orientation and animated state.
+ *
+ */
+
+// eslint-disable-next-line import/prefer-default-export
 export class Character {
-  // walkenable
+  // walkable
   enableWalk:boolean;
 
   // Character holds an HTML image object
@@ -17,14 +40,12 @@ export class Character {
 
   direction: string;
 
-  // motion related to crop and render the spread sheet
+  // motion related to crop and render the spreadsheet
   frameNum:number;
 
   currFrame:number;
 
   waitFrame:number;
-
-  motionInvoke:number;
 
   constructor(xPos:number, yPos:number, imageElement:HTMLImageElement) {
     this.enableWalk = false;
@@ -42,6 +63,7 @@ export class Character {
   draw = (canvasCxt:CanvasRenderingContext2D) => {
     canvasCxt.drawImage(
       this.imageElement,
+      // eslint-disable-next-line no-mixed-operators
       this.currFrame * this.imageElement.width / this.frameNum,
       0,
       this.imageElement.width / this.frameNum,
@@ -53,19 +75,19 @@ export class Character {
     );
     // accumulate the frame
     this.frameControl();
-    if (this.currFrame == 0 && this.waitFrame == 5 && this.enableWalk) {
+    if (this.currFrame === 0 && this.waitFrame === 5 && this.enableWalk) {
       this.enableWalk = false;
     }
   };
 
   setEnableWalk = () => {
-    console.log('set enable walk!');
     this.enableWalk = true;
   };
 
   frameControl = () => {
     if (!this.enableWalk) return;
     this.waitFrame -= 1;
+    // eslint-disable-next-line eqeqeq
     if (this.waitFrame == 0) {
       // iterate through the currFrame to make dynamic motion
       if (this.currFrame < this.frameNum - 1) {
@@ -93,6 +115,7 @@ export class Character {
       case (Direction.Right):
         this.imageElement.src = 'img/RightWalk.png';
         break;
+      default:
     }
   };
 
@@ -103,33 +126,21 @@ export class Character {
 
   moveDown = () => {
     this.yPos += CANVAS_UNIT;
-    if (this.yPos === this.originY) {
-      return false;
-    }
-    return true;
+    return this.yPos !== this.originY;
   };
 
   moveUp = () => {
     this.yPos -= CANVAS_UNIT;
-    if (this.yPos === this.originY) {
-      return false;
-    }
-    return true;
+    return this.yPos !== this.originY;
   };
 
   moveLeft = () => {
     this.xPos -= CANVAS_UNIT;
-    if (this.xPos === this.originX) {
-      return false;
-    }
-    return true;
+    return this.xPos !== this.originX;
   };
 
   moveRight = () => {
     this.xPos += CANVAS_UNIT;
-    if (this.xPos === this.originX) {
-      return false;
-    }
-    return true;
+    return this.xPos !== this.originX;
   };
 }
