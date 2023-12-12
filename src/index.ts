@@ -1,4 +1,5 @@
-import { canvasInit } from './mainCanvas'
-window.onload = ()=>{
-    canvasInit()
-}
+import { canvasInit } from './mainCanvas';
+
+window.onload = () => {
+  canvasInit();
+};

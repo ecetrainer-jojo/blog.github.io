@@ -1,3 +1,5 @@
 node_modules
 dist
 /resources/
+/webpack.config.js
+/jest.config.js

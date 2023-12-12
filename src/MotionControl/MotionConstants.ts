@@ -1,8 +1,8 @@
 export const Direction = {
-    Up: 'Up',
-    Down: 'Down',
-    Left: 'Left',
-    Right: 'Right'
+  Up: 'Up',
+  Down: 'Down',
+  Left: 'Left',
+  Right: 'Right',
 };
 
-export const CANVAS_UNIT =32
+export const CANVAS_UNIT = 32;
