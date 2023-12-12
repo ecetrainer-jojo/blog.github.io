@@ -12,7 +12,7 @@ export class ComponentController{
     textBoard:TextBoard
 
     constructor(){
-        console.log("ComponentConrtoller constructs")
+        console.log("ComponentController constructs")
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.canvasCxt = document.querySelector('canvas').getContext('2d')!
     }
