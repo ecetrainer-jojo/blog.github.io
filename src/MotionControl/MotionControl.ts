@@ -1,11 +1,11 @@
-import { Background } from '../Background/backgroud';
 import { Character } from '../Character/Character';
-import { ComponentConstants as constant } from '../ComponentControl/ComponentConstants';
 import { DirectionKey } from '../DirectionalKey/DirectionKey';
 import { TextBoard } from '../TextBoard';
-import { Direction } from './Direction';
+import { Direction, generateRandomDirection } from './Direction';
 import { NPC } from '../Character/NPC';
-/* eslint-disable no-mixed-operators */
+import getRandomTime from '../Util/timeUtil';
+import { checkTwoPointsCollide, Coordinate } from '../Util/pointUtil';
+import Background from '../Background/backgroud';
 
 /**
  * The MotionController class orchestrates the motion aspects in the game.
@@ -29,8 +29,8 @@ import { NPC } from '../Character/NPC';
  * This class behaves like a hub for controlling and coordinating the
  * user-interactive motion aspects within the game.
  */
-// eslint-disable-next-line import/prefer-default-export
-export class MotionController {
+
+export default class MotionController {
   enable:boolean;
 
   character:Character;
@@ -41,10 +41,6 @@ export class MotionController {
 
   textBoard:TextBoard;
 
-  mapX:number;
-
-  mapY:number;
-
   npcs: NPC[];
 
   backgroundAction:Record<string, boolean> = {
@@ -54,20 +50,24 @@ export class MotionController {
     right: true,
   };
 
-  // disable the motion capture and prevent the character from moving
+  // disable the motion capture and prevent the characters (including npc) from moving
   disable() {
     this.enable = false;
+  }
+
+  checkCharacterNpcCollide(pos: Coordinate): boolean {
+    return this.npcs.some((npc) => checkTwoPointsCollide(pos, [npc.mapX, npc.mapY]));
   }
 
   // vision control for moving character and background, from perspective of character
   moveUp = () => {
     this.character.changeDirection(Direction.Up);
     // check whether any dialogue will be triggered
-    if (this.checkDialogueHandler(this.mapX, this.mapY - 1)) return;
-    if (this.background.checkCollision(this.mapX, this.mapY - 1)) return;
-    this.mapY -= 1;
+    if (this.checkDialogueHandler(this.character.mapX, this.character.mapY - 1)) return;
+    if (this.background.checkCollision(this.character.mapX, this.character.mapY - 1)) return;
+    if (this.checkCharacterNpcCollide([this.character.mapX, this.character.mapY - 1])) return;
+    this.character.mapY -= 1;
     if (this.character.yEquiv() && (this.backgroundAction).up) {
-      console.log('1');
       // In this case background is allowed to move down
       if (!this.background.moveDown()) {
         this.backgroundAction.up = false;
@@ -82,8 +82,9 @@ export class MotionController {
 
   moveDown = () => {
     this.character.changeDirection(Direction.Down);
-    if (this.background.checkCollision(this.mapX, this.mapY + 1)) return;
-    this.mapY += 1;
+    if (this.background.checkCollision(this.character.mapX, this.character.mapY + 1)) return;
+    if (this.checkCharacterNpcCollide([this.character.mapX, this.character.mapY + 1])) return;
+    this.character.mapY += 1;
     if (this.character.yEquiv() && this.backgroundAction.down) {
       // In this case background is allowed to move down
       if (!this.background.moveUp()) {
@@ -99,8 +100,9 @@ export class MotionController {
 
   moveLeft = () => {
     this.character.changeDirection(Direction.Left);
-    if (this.background.checkCollision(this.mapX - 1, this.mapY)) return;
-    this.mapX -= 1;
+    if (this.background.checkCollision(this.character.mapX - 1, this.character.mapY)) return;
+    if (this.checkCharacterNpcCollide([this.character.mapX - 1, this.character.mapY])) return;
+    this.character.mapX -= 1;
     if (this.character.xEquiv() && this.backgroundAction.left) {
       // In this case background is allowed to move down
       if (!this.background.moveRight()) {
@@ -116,8 +118,9 @@ export class MotionController {
 
   moveRight = () => {
     this.character.changeDirection(Direction.Right);
-    if (this.background.checkCollision(this.mapX + 1, this.mapY)) return;
-    this.mapX += 1;
+    if (this.background.checkCollision(this.character.mapX + 1, this.character.mapY)) return;
+    if (this.checkCharacterNpcCollide([this.character.mapX + 1, this.character.mapY])) return;
+    this.character.mapX += 1;
     if (this.character.xEquiv() && this.backgroundAction.right) {
       // In this case background is allowed to move down
       if (!this.background.moveLeft()) {
@@ -162,7 +165,7 @@ export class MotionController {
 
   initializeListener() {
     window.addEventListener('keydown', (event) => {
-      console.log(`Coordinate -> ${this.mapX}, ${this.mapY}`);
+      console.log(`Coordinate -> ${this.character.mapX}, ${this.character.mapY}`);
       if (event.key === 'Enter' && this.textBoard.enableDialogue === true) {
         // when no remaining text to present, re-enable
         if (this.textBoard.enterForNextText()) {
@@ -203,7 +206,51 @@ export class MotionController {
     this.enable = true;
   }
 
-  // eslint-disable-next-line max-len
+  /**
+   * Launches the NPC by setting an interval for NPC movement.
+   *
+   * @param {NPC} npc - The NPC to be launched.
+   */
+  npcLaunch(npc: NPC) {
+    const setMovingInterval = () => {
+      // eslint-disable-next-line no-param-reassign
+      npc.intervalId = window.setTimeout(() => {
+        npc.setEnableWalk();
+        console.log(`NPC coord: ${npc.mapX}, ${npc.mapY}`);
+        const direction = generateRandomDirection();
+        npc.changeDirection(direction);
+        switch (direction) {
+          case Direction.Up:
+            if (!this.background.checkCollision(npc.mapX, npc.mapY - 1)) {
+              npc.moveUpMap();
+            }
+            break;
+          case Direction.Down:
+            if (!this.background.checkCollision(npc.mapX, npc.mapY + 1)) {
+              npc.moveDownMap();
+            }
+            break;
+          case Direction.Left:
+            if (!this.background.checkCollision(npc.mapX - 1, npc.mapY)) {
+              npc.moveLeftMap();
+            }
+            break;
+          case Direction.Right:
+            if (!this.background.checkCollision(npc.mapX + 1, npc.mapY)) {
+              npc.moveRightMap();
+            }
+            break;
+          default:
+            break;
+        }
+        clearTimeout(npc.intervalId);
+        setMovingInterval();
+      }, getRandomTime()); // Set random timeout
+    };
+
+    setMovingInterval(); // Initialize the first timeout
+  }
+
   initialize(
     character:Character,
     background:Background,
@@ -218,12 +265,13 @@ export class MotionController {
     this.background = background;
     this.directionKey = directionKey;
     this.textBoard = textBoard;
-    this.mapX = -1 * constant.INIT_PALLET_X / 32 + constant.INIT_CHARACTER_X / 32;
-    this.mapY = -1 * constant.INIT_PALLET_Y / 32 + constant.INIT_CHARACTER_Y / 32;
     this.npcs = npcs;
 
     // start the event listener for keypressing
     this.initializeListener();
     this.initializeMouseTracker();
+
+    // start launching npcs
+    npcs.forEach((npc) => this.npcLaunch(npc));
   }
 }

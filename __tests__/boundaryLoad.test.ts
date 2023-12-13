@@ -1,6 +1,6 @@
 import * as collisionMap from '../resources/tile_assets/towns/PalletTownMap.json';
-import { Coordinate } from '../src/Background/backgroud';
 import { MapLayer, MapLayers } from '../src/Models/mapLayer';
+import { Coordinate } from '../src/Util/pointUtil';
 
 describe('Testing extract the boundary info from the json file', () => {
   it('load the data from json file', () => {

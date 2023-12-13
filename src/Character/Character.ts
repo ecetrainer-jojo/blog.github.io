@@ -20,9 +20,11 @@
  *
  */
 import { Direction } from '../MotionControl/Direction';
+import { ComponentConstants as constant } from '../ComponentControl/ComponentConstants';
 
 const CANVAS_UNIT = 32;
 
+/* eslint-disable no-mixed-operators */
 // eslint-disable-next-line import/prefer-default-export
 export class Character {
   // walkable
@@ -48,6 +50,13 @@ export class Character {
 
   waitFrame:number;
 
+  // mapX and mapY are the global Map related Pos
+  // Take account of Character rendering position
+  // and background shift position
+  mapX: number;
+
+  mapY: number;
+
   constructor(xPos:number, yPos:number, imageElement:HTMLImageElement) {
     this.enableWalk = false;
     this.xPos = xPos;
@@ -59,6 +68,9 @@ export class Character {
     this.frameNum = 4;
     this.currFrame = 0;
     this.waitFrame = 5;
+    // eslint-disable-next-line no-mixed-operators
+    this.mapX = -1 * constant.INIT_PALLET_X / 32 + this.xPos / 32;
+    this.mapY = -1 * constant.INIT_PALLET_Y / 32 + this.yPos / 32;
   }
 
   draw = (canvasCxt:CanvasRenderingContext2D) => {
@@ -125,23 +137,23 @@ export class Character {
 
   yEquiv = () => this.yPos === this.originY;
 
-  moveDown = () => {
+  moveDown() {
     this.yPos += CANVAS_UNIT;
     return this.yPos !== this.originY;
-  };
+  }
 
-  moveUp = () => {
+  moveUp() {
     this.yPos -= CANVAS_UNIT;
     return this.yPos !== this.originY;
-  };
+  }
 
-  moveLeft = () => {
+  moveLeft() {
     this.xPos -= CANVAS_UNIT;
     return this.xPos !== this.originX;
-  };
+  }
 
-  moveRight = () => {
+  moveRight() {
     this.xPos += CANVAS_UNIT;
     return this.xPos !== this.originX;
-  };
+  }
 }

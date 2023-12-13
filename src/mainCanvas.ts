@@ -1,6 +1,6 @@
 import { CANVAS_WIDTH_DEFAULT, CANVAS_HEIGHT_DEFAULT } from './constants';
 import { ComponentController } from './ComponentControl/ComponentControl';
-import { MotionController } from './MotionControl/MotionControl';
+import MotionController from './MotionControl/MotionControl';
 
 /**
  * Async function to process content.

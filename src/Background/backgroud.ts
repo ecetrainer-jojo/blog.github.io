@@ -1,8 +1,7 @@
 import { ComponentConstants } from '../ComponentControl/ComponentConstants';
 import { CANVAS_HEIGHT_DEFAULT, CANVAS_WIDTH_DEFAULT } from '../constants';
 import { MapLayer, MapLayers } from '../Models/mapLayer';
-
-export type Coordinate = [number, number];
+import { checkTwoPointsCollide, Coordinate } from '../Util/pointUtil';
 
 /**
  * The Background class represents the background of a game screen.
@@ -19,7 +18,7 @@ export type Coordinate = [number, number];
  * This class is the primary means of navigating through the 2D grid of the game while
  * managing collisions and dialogues.
  */
-export class Background {
+export default class Background {
   xPos: number;
 
   yPos: number;
@@ -44,7 +43,7 @@ export class Background {
     for (let i = 0; i < rawCollisionData.data.length; i += 1) {
       if (rawCollisionData.data[i] !== 0) {
         this.collisionArray.push(
-          [Math.trunc(i / rawCollisionData.width), i % rawCollisionData.width],
+          [i % rawCollisionData.width, Math.trunc(i / rawCollisionData.width)],
         );
       }
     }
@@ -122,12 +121,7 @@ export class Background {
   checkCollision = (currX:number, currY:number): boolean => {
     for (let i = 0; i < this.collisionArray.length; i += 1) {
       const collisionItem = this.collisionArray[i];
-      if ((collisionItem[0] === currY && collisionItem[1] === currX)
-            || (collisionItem[0] === currY && collisionItem[1] === currX + 1)
-            || (collisionItem[0] === currY + 1 && collisionItem[1] === currX)
-            || (collisionItem[0] === currY + 1 && collisionItem[1] === currX + 1)) {
-        return true;
-      }
+      if (checkTwoPointsCollide(collisionItem, [currX, currY])) return true;
     }
     return false;
   };
