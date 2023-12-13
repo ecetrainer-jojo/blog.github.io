@@ -10,6 +10,7 @@ export class NPC extends Character {
 
   startMoving() {
     this.intervalId = window.setInterval(() => {
+      console.log('Should have a random movement')
       const direction = generateRandomDirection();
       this.changeDirection(direction);
 
@@ -39,5 +40,6 @@ export class NPC extends Character {
     super(xPos, yPos, imageElement);
     // NPC specific property initialization
     this.name = name;
+    this.startMoving();
   }
 }
