@@ -221,22 +221,38 @@ export default class MotionController {
         npc.changeDirection(direction);
         switch (direction) {
           case Direction.Up:
-            if (!this.background.checkCollision(npc.mapX, npc.mapY - 1)) {
+            if (!this.background.checkCollision(npc.mapX, npc.mapY - 1)
+            && !checkTwoPointsCollide(
+              [this.character.mapX, this.character.mapY],
+              [npc.mapX, npc.mapY - 1],
+            )) {
               npc.moveUpMap();
             }
             break;
           case Direction.Down:
-            if (!this.background.checkCollision(npc.mapX, npc.mapY + 1)) {
+            if (!this.background.checkCollision(npc.mapX, npc.mapY + 1)
+                && !checkTwoPointsCollide(
+                  [this.character.mapX, this.character.mapY],
+                  [npc.mapX, npc.mapY + 1],
+                )) {
               npc.moveDownMap();
             }
             break;
           case Direction.Left:
-            if (!this.background.checkCollision(npc.mapX - 1, npc.mapY)) {
+            if (!this.background.checkCollision(npc.mapX - 1, npc.mapY)
+                && !checkTwoPointsCollide(
+                  [this.character.mapX, this.character.mapY],
+                  [npc.mapX - 1, npc.mapY],
+                )) {
               npc.moveLeftMap();
             }
             break;
           case Direction.Right:
-            if (!this.background.checkCollision(npc.mapX + 1, npc.mapY)) {
+            if (!this.background.checkCollision(npc.mapX + 1, npc.mapY)
+                && !checkTwoPointsCollide(
+                  [this.character.mapX, this.character.mapY],
+                  [npc.mapX + 1, npc.mapY],
+                )) {
               npc.moveRightMap();
             }
             break;
