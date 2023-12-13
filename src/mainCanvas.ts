@@ -15,6 +15,7 @@ export const ProcessContent = async () => {
     componentController.background,
     componentController.directionKey,
     componentController.textBoard,
+    componentController.npcs,
   );
 };
 

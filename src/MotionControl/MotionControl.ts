@@ -4,6 +4,7 @@ import { ComponentConstants as constant } from '../ComponentControl/ComponentCon
 import { DirectionKey } from '../DirectionalKey/DirectionKey';
 import { TextBoard } from '../TextBoard';
 import { Direction } from './Direction';
+import { NPC } from '../Character/NPC';
 /* eslint-disable no-mixed-operators */
 
 /**
@@ -44,6 +45,8 @@ export class MotionController {
 
   mapY:number;
 
+  npcs: NPC[];
+
   backgroundAction:Record<string, boolean> = {
     up: true,
     down: true,
@@ -62,13 +65,15 @@ export class MotionController {
     // check whether any dialogue will be triggered
     if (this.checkDialogueHandler(this.mapX, this.mapY - 1)) return;
     if (this.background.checkCollision(this.mapX, this.mapY - 1)) return;
-    // check for collision TDD
     this.mapY -= 1;
     if (this.character.yEquiv() && (this.backgroundAction).up) {
+      console.log('1');
       // In this case background is allowed to move down
       if (!this.background.moveDown()) {
         this.backgroundAction.up = false;
         this.character.moveUp();
+      } else {
+        this.npcs.forEach((npc) => npc.moveDown());
       }
     } else if (!this.character.moveUp()) {
       this.backgroundAction.down = true;
@@ -79,12 +84,13 @@ export class MotionController {
     this.character.changeDirection(Direction.Down);
     if (this.background.checkCollision(this.mapX, this.mapY + 1)) return;
     this.mapY += 1;
-    // check for collsion TDD
     if (this.character.yEquiv() && this.backgroundAction.down) {
-      // In this case backrgound is allowed to move down
+      // In this case background is allowed to move down
       if (!this.background.moveUp()) {
         this.backgroundAction.down = false;
         this.character.moveDown();
+      } else {
+        this.npcs.forEach((npc) => npc.moveUp());
       }
     } else if (!this.character.moveDown()) {
       this.backgroundAction.up = true;
@@ -100,6 +106,8 @@ export class MotionController {
       if (!this.background.moveRight()) {
         this.backgroundAction.left = false;
         this.character.moveLeft();
+      } else {
+        this.npcs.forEach((npc) => npc.moveRight());
       }
     } else if (!this.character.moveLeft()) {
       this.backgroundAction.right = true;
@@ -115,6 +123,8 @@ export class MotionController {
       if (!this.background.moveLeft()) {
         this.backgroundAction.right = false;
         this.character.moveRight();
+      } else {
+        this.npcs.forEach((npc) => npc.moveLeft());
       }
     } else if (!this.character.moveRight()) {
       this.backgroundAction.left = true;
@@ -194,7 +204,13 @@ export class MotionController {
   }
 
   // eslint-disable-next-line max-len
-  initialize(character:Character, background:Background, directionKey:DirectionKey, textBoard: TextBoard) {
+  initialize(
+    character:Character,
+    background:Background,
+    directionKey:DirectionKey,
+    textBoard: TextBoard,
+    npcs:NPC[],
+  ) {
     // control the on/off event listener
     this.enable = true;
     // get the required element
@@ -204,6 +220,7 @@ export class MotionController {
     this.textBoard = textBoard;
     this.mapX = -1 * constant.INIT_PALLET_X / 32 + constant.INIT_CHARACTER_X / 32;
     this.mapY = -1 * constant.INIT_PALLET_Y / 32 + constant.INIT_CHARACTER_Y / 32;
+    this.npcs = npcs;
 
     // start the event listener for keypressing
     this.initializeListener();

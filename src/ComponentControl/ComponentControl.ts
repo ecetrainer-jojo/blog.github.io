@@ -63,6 +63,7 @@ export class ComponentController {
       10 * 32,
       15 * 32,
       await loadImage(constant.DEFAULT_CHARACTER_IMG),
+      this.background,
     )];
 
     this.directionKey = new DirectionKey(
