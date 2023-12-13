@@ -1,5 +1,5 @@
 import { ComponentConstants } from '../ComponentControl/ComponentConstants';
-import { Direction } from '../MotionControl/MotionConstants';
+import { Direction } from '../MotionControl/Direction';
 
 interface ArrowKey {
   xStart:number

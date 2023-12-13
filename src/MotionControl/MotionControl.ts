@@ -1,9 +1,9 @@
 import { Background } from '../Background/backgroud';
 import { Character } from '../Character/Character';
-import { Direction } from './MotionConstants';
 import { ComponentConstants as constant } from '../ComponentControl/ComponentConstants';
 import { DirectionKey } from '../DirectionalKey/DirectionKey';
 import { TextBoard } from '../TextBoard';
+import { Direction } from './Direction';
 /* eslint-disable no-mixed-operators */
 
 /**
@@ -121,7 +121,7 @@ export class MotionController {
     }
   };
 
-  iniializeMouseTracker() {
+  initializeMouseTracker() {
     document.querySelector('canvas').addEventListener('mousedown', (event) => {
       if (!this.enable) return;
       switch (this.directionKey.checkKey(event.clientX, event.clientY)) {
@@ -181,7 +181,7 @@ export class MotionController {
     const checkDialogueResult = this.background.checkDialogue(currX, currY);
     if (checkDialogueResult != null) {
       console.log(`Dialogue ${checkDialogueResult} will be triggered`);
-      this.textBoard.setInputText('Welcome to this Town. Please enjoy your time here and get to know more about me!');
+      this.textBoard.setInputText('Welcome to this Town. Please enjoy your time here and get to know more about me! Welcome to this Town. Please enjoy your time here and get to know more about me! Welcome to this Town. Please enjoy your time here and get to know more about me! Welcome to this Town. Please enjoy your time here and get to know more about me!');
       this.disable();
       this.textBoard.enableDialogue = true;
       return true;
@@ -207,6 +207,6 @@ export class MotionController {
 
     // start the event listener for keypressing
     this.initializeListener();
-    this.iniializeMouseTracker();
+    this.initializeMouseTracker();
   }
 }
