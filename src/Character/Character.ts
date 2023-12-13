@@ -137,22 +137,22 @@ export class Character {
 
   yEquiv = () => this.yPos === this.originY;
 
-  moveDown() {
+  moveDownRenderingPosition() {
     this.yPos += CANVAS_UNIT;
     return this.yPos !== this.originY;
   }
 
-  moveUp() {
+  moveUpRenderingPosition() {
     this.yPos -= CANVAS_UNIT;
     return this.yPos !== this.originY;
   }
 
-  moveLeft() {
+  moveLeftRenderingPosition() {
     this.xPos -= CANVAS_UNIT;
     return this.xPos !== this.originX;
   }
 
-  moveRight() {
+  moveRightRenderingPosition() {
     this.xPos += CANVAS_UNIT;
     return this.xPos !== this.originX;
   }

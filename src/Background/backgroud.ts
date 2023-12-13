@@ -1,7 +1,7 @@
 import { ComponentConstants } from '../ComponentControl/ComponentConstants';
 import { CANVAS_HEIGHT_DEFAULT, CANVAS_WIDTH_DEFAULT } from '../constants';
 import { MapLayer, MapLayers } from '../Models/mapLayer';
-import { checkTwoPointsCollide, Coordinate } from '../Util/pointUtil';
+import { checkBoundaryCollide, Coordinate } from '../Util/pointUtil';
 
 /**
  * The Background class represents the background of a game screen.
@@ -79,7 +79,7 @@ export default class Background {
   };
 
   // vision control
-  moveDown = () => {
+  backgroundMoveDown = () => {
     if (this.yPos !== 0) {
       this.yPos += ComponentConstants.CANVAS_UNIT;
       return true;
@@ -87,7 +87,7 @@ export default class Background {
     return false;
   };
 
-  moveUp = () => {
+  backgroundMoveUp = () => {
     if (this.yPos + this.imageElement.height !== CANVAS_HEIGHT_DEFAULT) {
       this.yPos -= ComponentConstants.CANVAS_UNIT;
       return true;
@@ -95,7 +95,7 @@ export default class Background {
     return false;
   };
 
-  moveLeft = () => {
+  backgroundMoveLeft = () => {
     if (this.xPos + this.imageElement.width !== CANVAS_WIDTH_DEFAULT) {
       this.xPos -= ComponentConstants.CANVAS_UNIT;
       return true;
@@ -103,7 +103,7 @@ export default class Background {
     return false;
   };
 
-  moveRight = () => {
+  backgroundMoveRight = () => {
     if (this.xPos !== 0) {
       this.xPos += ComponentConstants.CANVAS_UNIT;
       return true;
@@ -121,7 +121,7 @@ export default class Background {
   checkCollision = (currX:number, currY:number): boolean => {
     for (let i = 0; i < this.collisionArray.length; i += 1) {
       const collisionItem = this.collisionArray[i];
-      if (checkTwoPointsCollide(collisionItem, [currX, currY])) return true;
+      if (checkBoundaryCollide(collisionItem, [currX, currY])) return true;
     }
     return false;
   };

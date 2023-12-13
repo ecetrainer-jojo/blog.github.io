@@ -19,23 +19,25 @@ export class NPC extends Character {
     this.name = name;
   }
 
+  // For the NPC no need to shift through their perspective
+  // Both global (relative to background) and rendering pos is modified
   moveUpMap = () => {
     this.mapY -= 1;
-    return this.moveUp();
+    return this.moveUpRenderingPosition();
   };
 
   moveDownMap = () => {
     this.mapY += 1;
-    return this.moveDown();
+    return this.moveDownRenderingPosition();
   };
 
   moveLeftMap = () => {
     this.mapX -= 1;
-    return this.moveLeft();
+    return this.moveLeftRenderingPosition();
   };
 
   moveRightMap = () => {
     this.mapX += 1;
-    return this.moveRight();
+    return this.moveRightRenderingPosition();
   };
 }
