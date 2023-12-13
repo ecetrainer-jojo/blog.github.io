@@ -41,6 +41,7 @@ export class TextBoard {
   yPos:number;
 
   constructor(imageElement:HTMLImageElement, canvasCxt:CanvasRenderingContext2D) {
+    console.log('The textboard is good!');
     this.enableDialogue = false;
     this.loadLock = false;
     this.xPos = DIALOGUE_X_POS;
@@ -71,11 +72,25 @@ export class TextBoard {
    *
    * @returns {void}
    */
+  // loadTextChunks = (dialogContent: string): void => {
+  //   // break the string into chunks
+  //   for (let i = 0; i < dialogContent.length; i += MAX_LINE_LENGTH) {
+  //     const chunk = dialogContent.substring(i, i + MAX_LINE_LENGTH);
+  //     this.textChunks.push(chunk.trim());
+  //   }
+  // };
   loadTextChunks = (dialogContent: string): void => {
-    // break the string into chunks
-    for (let i = 0; i < dialogContent.length; i += MAX_LINE_LENGTH) {
-      const chunk = dialogContent.substring(i, i + MAX_LINE_LENGTH);
+    let start = 0;
+    while (start < dialogContent.length) {
+      let end = start + MAX_LINE_LENGTH;
+      if (end < dialogContent.length) {
+        const tempChunk = dialogContent.substring(start, end);
+        const nearestSpace = tempChunk.lastIndexOf(' ', end);
+        end = (start + nearestSpace < end) ? start + nearestSpace : end;
+      }
+      const chunk = dialogContent.substring(start, end);
       this.textChunks.push(chunk.trim());
+      start = end + 1;
     }
   };
 
@@ -104,7 +119,7 @@ export class TextBoard {
    */
   displayReadyText = (): void => {
     for (let i = 0; i < Math.min(MAX_DIALOGUE_LINES, this.textChunks.length); i += 1) {
-      console.log(`remaining strings${this.textChunks}`);
+      console.log(`remaining strings${this.textChunks[i]}`);
       this.canvasCxt.fillText(this.textChunks[i], TEXT_X_POS, TEXT_Y_POS + i * LINE_SPACING);
     }
   };

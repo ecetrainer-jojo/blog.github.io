@@ -1,5 +1,3 @@
-import { Direction, CANVAS_UNIT } from '../MotionControl/MotionConstants';
-
 /**
  * The Character class represents a controllable figure on a game screen.
  * It contains properties including the current position,
@@ -21,6 +19,9 @@ import { Direction, CANVAS_UNIT } from '../MotionControl/MotionConstants';
  * including its position, orientation and animated state.
  *
  */
+import { Direction } from '../MotionControl/Direction';
+
+const CANVAS_UNIT = 32;
 
 // eslint-disable-next-line import/prefer-default-export
 export class Character {

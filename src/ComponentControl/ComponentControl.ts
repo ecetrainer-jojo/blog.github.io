@@ -4,6 +4,7 @@ import { DirectionKey } from '../DirectionalKey/DirectionKey';
 import { TextBoard } from '../TextBoard';
 import { ComponentConstants as constant } from './ComponentConstants';
 import loadImage from '../Util/imageUtil';
+import { NPC } from '../Character/NPC';
 
 /**
  * The ComponentController class orchestrates the initialization and animation
@@ -36,6 +37,8 @@ export class ComponentController {
 
   textBoard:TextBoard;
 
+  npcs: NPC[];
+
   constructor() {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.canvasCxt = document.querySelector('canvas').getContext('2d')!;
@@ -54,6 +57,13 @@ export class ComponentController {
       constant.INIT_CHARACTER_Y,
       await loadImage(constant.DEFAULT_CHARACTER_IMG),
     );
+
+    this.npcs = [new NPC(
+      'Test',
+      10 * 32,
+      15 * 32,
+      await loadImage(constant.DEFAULT_CHARACTER_IMG),
+    )];
 
     this.directionKey = new DirectionKey(
       constant.INIT_DIRECTION_KEY_X,
@@ -75,5 +85,6 @@ export class ComponentController {
     this.character.draw(this.canvasCxt);
     this.directionKey.draw(this.canvasCxt);
     this.textBoard.draw();
+    this.npcs.forEach(((npc) => npc.draw(this.canvasCxt)));
   };
 }
