@@ -114,6 +114,7 @@ export class Character {
 
   // vision control and picture switch
   changeDirection = (direction:string) => {
+    this.direction = direction;
     // please put them into constants
     switch (direction) {
       case (Direction.Up):

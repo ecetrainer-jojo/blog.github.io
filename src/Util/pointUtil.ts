@@ -1,4 +1,6 @@
+import { Direction } from '../MotionControl/Direction';
 import { NPC } from '../Character/NPC';
+import { Character } from '../Character/Character';
 
 export type Coordinate = [number, number];
 
@@ -35,4 +37,47 @@ export function checkCharacterNpcCollide(npcs: NPC[], pos: Coordinate): boolean 
     pos,
     [npc.mapX, npc.mapY],
   ));
+}
+
+function checkCharacterFaceToNpc(
+  character:Coordinate,
+  npc: Coordinate,
+  direction: string,
+): string | undefined {
+  if (direction === Direction.Down
+  && character[0] === npc[0] && character[1] + HUMAN_TOLERANCE === npc[1]) {
+    return Direction.Up;
+  }
+  if (direction === Direction.Up
+      && character[0] === npc[0] && character[1] - HUMAN_TOLERANCE === npc[1]) {
+    return Direction.Down;
+  }
+  if (direction === Direction.Left
+      && character[1] === npc[1] && character[0] - HUMAN_TOLERANCE === npc[0]) {
+    return Direction.Right;
+  }
+  if (direction === Direction.Right
+      && character[1] === npc[1] && character[0] + HUMAN_TOLERANCE === npc[0]) {
+    return Direction.Left;
+  }
+  return undefined;
+}
+
+export function checkStartNpcConversation(
+  character:Character,
+  npcs:NPC[],
+): NPC | undefined {
+  for (let i = 0; i < npcs.length; i += 1) {
+    const characterPos: Coordinate = [character.mapX, character.mapY];
+    const npcPos: Coordinate = [npcs[i].mapX, npcs[i].mapY];
+    console.log(character, npcPos);
+    const faceDirection = checkCharacterFaceToNpc(characterPos, npcPos, character.direction);
+    console.log(faceDirection);
+    if (faceDirection) {
+      const involvedNpc = npcs[i];
+      involvedNpc.changeDirection(faceDirection);
+      return involvedNpc;
+    }
+  }
+  return undefined;
 }

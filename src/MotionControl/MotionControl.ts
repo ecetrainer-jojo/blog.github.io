@@ -6,7 +6,7 @@ import { NPC } from '../Character/NPC';
 import getRandomTime from '../Util/timeUtil';
 import {
   checkCharacterNpcCollide,
-  checkHumanCollide,
+  checkHumanCollide, checkStartNpcConversation,
 } from '../Util/pointUtil';
 import Background from '../Background/backgroud';
 
@@ -64,7 +64,6 @@ export default class MotionController {
     const currCharacterMapX = this.character.mapX;
     const currCharacterMapY = this.character.mapY;
     // check whether any dialogue will be triggered
-    if (this.checkDialogueHandler(currCharacterMapX, currCharacterMapY - 1)) return;
     if (this.background.checkCollision(currCharacterMapX, currCharacterMapY - 1)) return;
     if (checkCharacterNpcCollide(this.npcs, [currCharacterMapX, currCharacterMapY - 1])) return;
     this.character.mapY -= 1;
@@ -172,10 +171,32 @@ export default class MotionController {
 
   initializeListener() {
     window.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' && this.textBoard.enableDialogue === true) {
+      if (event.key === 'Enter') {
         // when no remaining text to present, re-enable
-        if (this.textBoard.enterForNextText()) {
-          this.enable = true;
+        if (this.textBoard.enableDialogue === true) {
+          const result = this.textBoard.enterForNextText();
+          if (result === true) {
+            this.enable = true;
+          }
+        } else {
+          console.log('Dialogue start');
+          const currCharacterMapX = this.character.mapX;
+          const currCharacterMapY = this.character.mapY;
+          // eslint-disable-next-line default-case
+          switch (this.character.direction) {
+            case Direction.Up:
+              this.checkDialogueHandler(currCharacterMapX, currCharacterMapY - 2);
+              break;
+            case Direction.Down:
+              this.checkDialogueHandler(currCharacterMapX, currCharacterMapY + 2);
+              break;
+            case Direction.Left:
+              this.checkDialogueHandler(currCharacterMapX - 2, currCharacterMapY);
+              break;
+            case Direction.Right:
+              this.checkDialogueHandler(currCharacterMapX + 2, currCharacterMapY);
+              break;
+          }
         }
       }
       if (!this.enable) return;
@@ -203,6 +224,13 @@ export default class MotionController {
       this.textBoard.enableDialogue = true;
       return true;
     }
+    const facedToNpc = checkStartNpcConversation(this.character, this.npcs);
+    if (facedToNpc) {
+      this.textBoard.setInputText(facedToNpc.name);
+      this.disable();
+      this.textBoard.enableDialogue = true;
+      return true;
+    }
     return false;
   };
 
@@ -219,48 +247,50 @@ export default class MotionController {
     const setMovingInterval = () => {
       // eslint-disable-next-line no-param-reassign
       npc.intervalId = window.setTimeout(() => {
-        npc.setEnableWalk();
-        const direction = generateRandomDirection();
-        npc.changeDirection(direction);
-        switch (direction) {
-          case Direction.Up:
-            if (!this.background.checkCollision(npc.mapX, npc.mapY - 1)
-            && !checkHumanCollide(
-              [this.character.mapX, this.character.mapY],
-              [npc.mapX, npc.mapY - 1],
-            )) {
-              npc.moveUpMap();
-            }
-            break;
-          case Direction.Down:
-            if (!this.background.checkCollision(npc.mapX, npc.mapY + 1)
-                && !checkHumanCollide(
-                  [this.character.mapX, this.character.mapY],
-                  [npc.mapX, npc.mapY + 1],
-                )) {
-              npc.moveDownMap();
-            }
-            break;
-          case Direction.Left:
-            if (!this.background.checkCollision(npc.mapX - 1, npc.mapY)
-                && !checkHumanCollide(
-                  [this.character.mapX, this.character.mapY],
-                  [npc.mapX - 1, npc.mapY],
-                )) {
-              npc.moveLeftMap();
-            }
-            break;
-          case Direction.Right:
-            if (!this.background.checkCollision(npc.mapX + 1, npc.mapY)
-                && !checkHumanCollide(
-                  [this.character.mapX, this.character.mapY],
-                  [npc.mapX + 1, npc.mapY],
-                )) {
-              npc.moveRightMap();
-            }
-            break;
-          default:
-            break;
+        if (this.enable) {
+          npc.setEnableWalk();
+          const direction = generateRandomDirection();
+          npc.changeDirection(direction);
+          switch (direction) {
+            case Direction.Up:
+              if (!this.background.checkCollision(npc.mapX, npc.mapY - 1)
+                  && !checkHumanCollide(
+                    [this.character.mapX, this.character.mapY],
+                    [npc.mapX, npc.mapY - 1],
+                  )) {
+                npc.moveUpMap();
+              }
+              break;
+            case Direction.Down:
+              if (!this.background.checkCollision(npc.mapX, npc.mapY + 1)
+                  && !checkHumanCollide(
+                    [this.character.mapX, this.character.mapY],
+                    [npc.mapX, npc.mapY + 1],
+                  )) {
+                npc.moveDownMap();
+              }
+              break;
+            case Direction.Left:
+              if (!this.background.checkCollision(npc.mapX - 1, npc.mapY)
+                  && !checkHumanCollide(
+                    [this.character.mapX, this.character.mapY],
+                    [npc.mapX - 1, npc.mapY],
+                  )) {
+                npc.moveLeftMap();
+              }
+              break;
+            case Direction.Right:
+              if (!this.background.checkCollision(npc.mapX + 1, npc.mapY)
+                  && !checkHumanCollide(
+                    [this.character.mapX, this.character.mapY],
+                    [npc.mapX + 1, npc.mapY],
+                  )) {
+                npc.moveRightMap();
+              }
+              break;
+            default:
+              break;
+          }
         }
         clearTimeout(npc.intervalId);
         setMovingInterval();

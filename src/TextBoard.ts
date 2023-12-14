@@ -119,7 +119,6 @@ export class TextBoard {
    */
   displayReadyText = (): void => {
     for (let i = 0; i < Math.min(MAX_DIALOGUE_LINES, this.textChunks.length); i += 1) {
-      console.log(`remaining strings${this.textChunks[i]}`);
       this.canvasCxt.fillText(this.textChunks[i], TEXT_X_POS, TEXT_Y_POS + i * LINE_SPACING);
     }
   };
