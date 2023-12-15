@@ -70,9 +70,7 @@ export function checkStartNpcConversation(
   for (let i = 0; i < npcs.length; i += 1) {
     const characterPos: Coordinate = [character.mapX, character.mapY];
     const npcPos: Coordinate = [npcs[i].mapX, npcs[i].mapY];
-    console.log(character, npcPos);
     const faceDirection = checkCharacterFaceToNpc(characterPos, npcPos, character.direction);
-    console.log(faceDirection);
     if (faceDirection) {
       const involvedNpc = npcs[i];
       involvedNpc.changeDirection(faceDirection);

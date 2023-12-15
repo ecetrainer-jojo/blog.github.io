@@ -180,23 +180,28 @@ export default class MotionController {
           }
         } else {
           console.log('Dialogue start');
-          const currCharacterMapX = this.character.mapX;
-          const currCharacterMapY = this.character.mapY;
-          // eslint-disable-next-line default-case
-          switch (this.character.direction) {
-            case Direction.Up:
-              this.checkDialogueHandler(currCharacterMapX, currCharacterMapY - 2);
-              break;
-            case Direction.Down:
-              this.checkDialogueHandler(currCharacterMapX, currCharacterMapY + 2);
-              break;
-            case Direction.Left:
-              this.checkDialogueHandler(currCharacterMapX - 2, currCharacterMapY);
-              break;
-            case Direction.Right:
-              this.checkDialogueHandler(currCharacterMapX + 2, currCharacterMapY);
-              break;
-          }
+          this.checkDialogueHandler(
+              this.character.mapX,
+              this.character.mapY,
+              this.character.direction
+              )
+          // const currCharacterMapX = this.character.mapX;
+          // const currCharacterMapY = this.character.mapY;
+          // // eslint-disable-next-line default-case
+          // switch (this.character.direction) {
+          //   case Direction.Up:
+          //     this.checkDialogueHandler(currCharacterMapX, currCharacterMapY - 2);
+          //     break;
+          //   case Direction.Down:
+          //     this.checkDialogueHandler(currCharacterMapX, currCharacterMapY + 2);
+          //     break;
+          //   case Direction.Left:
+          //     this.checkDialogueHandler(currCharacterMapX - 2, currCharacterMapY);
+          //     break;
+          //   case Direction.Right:
+          //     this.checkDialogueHandler(currCharacterMapX + 2, currCharacterMapY);
+          //     break;
+          // }
         }
       }
       if (!this.enable) return;
@@ -216,8 +221,10 @@ export default class MotionController {
     });
   }
 
-  checkDialogueHandler = (currX:number, currY:number) => {
-    const checkDialogueResult = this.background.checkDialogue(currX, currY);
+  checkDialogueHandler = (currX:number, currY:number, direction: string) => {
+    const checkDialogueResult = this.background.checkDialogue(currX, currY, direction);
+    console.log("checkDialogueHandler")
+    console.log(checkDialogueResult)
     if (checkDialogueResult != null) {
       this.textBoard.setInputText('Welcome to this Town. Please enjoy your time here and get to know more about me! Welcome to this Town. Please enjoy your time here and get to know more about me! Welcome to this Town. Please enjoy your time here and get to know more about me! Welcome to this Town. Please enjoy your time here and get to know more about me!');
       this.disable();

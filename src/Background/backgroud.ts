@@ -2,6 +2,7 @@ import { ComponentConstants } from '../ComponentControl/ComponentConstants';
 import { CANVAS_HEIGHT_DEFAULT, CANVAS_WIDTH_DEFAULT } from '../constants';
 import { MapLayer, MapLayers } from '../Models/mapLayer';
 import { checkBoundaryCollide, Coordinate } from '../Util/pointUtil';
+import { Direction } from '../MotionControl/Direction';
 
 /**
  * The Background class represents the background of a game screen.
@@ -62,7 +63,7 @@ export default class Background {
       const dialogueBlock: Coordinate[] = [];
       for (let i = 0; i < dialogueLayer.data.length; i += 1) {
         if (dialogueLayer.data[i] !== 0) {
-          dialogueBlock.push([Math.trunc(i / dialogueLayer.width), i % dialogueLayer.width]);
+          dialogueBlock.push([i % dialogueLayer.width, Math.trunc(i / dialogueLayer.width)]);
         }
       }
       this.dialogueMap.set(layerKey, dialogueBlock);
@@ -126,22 +127,63 @@ export default class Background {
     return false;
   };
 
+  // const currCharacterMapX = this.character.mapX;
+  // const currCharacterMapY = this.character.mapY;
+  // // eslint-disable-next-line default-case
+  // switch (this.character.direction) {
+  //   case Direction.Up:
+  //     this.checkDialogueHandler(currCharacterMapX, currCharacterMapY - 2);
+  //     break;
+  //   case Direction.Down:
+  //     this.checkDialogueHandler(currCharacterMapX, currCharacterMapY + 2);
+  //     break;
+  //   case Direction.Left:
+  //     this.checkDialogueHandler(currCharacterMapX - 2, currCharacterMapY);
+  //     break;
+  //   case Direction.Right:
+  //     this.checkDialogueHandler(currCharacterMapX + 2, currCharacterMapY);
+  //     break;
+  // }
+
   /**
    * Searches for a key in a dialogue map that matches the given coordinates.
    * @param {number} currX - The current x-coordinate to match.
    * @param {number} currY - The current y-coordinate to match.
+   * @param direction
    * @returns {number | null} - The key that matches the coordinates, or null if no match is found.
    */
-  checkDialogue = (currX:number, currY:number): number | null => {
-    let keyResult: number | null = null;
+
+  /// !!!!!Fix this buggy thing
+  checkDialogue = (currX:number, currY:number, direction: string): number | null => {
+    console.log('start checking dialogue for boundary');
+    console.log(currX, currY, direction);
+    let resultKey = null
     this.dialogueMap.forEach((value, key) => {
-      value.forEach((coordinate) => {
-        if (coordinate[0] === currY && coordinate[1] === currX) {
-          keyResult = key;
+      for (let i = 0; i < value.length; i += 1) {
+        let checkBoundaryDialogueResult = false;
+        const coordinate = value[i];
+        console.log(`Checking coordinate: ${coordinate}`);
+        switch (direction) {
+          case Direction.Up:
+            checkBoundaryDialogueResult = checkBoundaryCollide(coordinate, [currX, currY - 1]);
+            break;
+          case Direction.Down:
+            checkBoundaryDialogueResult = checkBoundaryCollide(coordinate, [currX, currY + 1]);
+            break;
+          case Direction.Left:
+            checkBoundaryDialogueResult = checkBoundaryCollide(coordinate, [currX - 1, currY]);
+            break;
+          case Direction.Right:
+            checkBoundaryDialogueResult = checkBoundaryCollide(coordinate, [currX, currY + 1]);
+            break;
+          default:
+            break;
         }
-      });
+        console.log(checkBoundaryDialogueResult)
+        if (checkBoundaryDialogueResult) resultKey = key
+      }
     });
-    return keyResult;
+    return resultKey;
   };
 
   constructor(
