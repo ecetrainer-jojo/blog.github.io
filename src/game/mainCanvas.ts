@@ -8,15 +8,16 @@ import MotionController from './MotionControl/MotionControl';
  */
 export const ProcessContent = async () => {
   const componentController = new ComponentController();
+  console.log("process content")
   await componentController.initialize();
-  const motionController = new MotionController();
-  motionController.initialize(
-    componentController.character,
-    componentController.background,
-    componentController.directionKey,
-    componentController.textBoard,
-    componentController.npcs,
+  const motionController = new MotionController(
+      componentController.character!!,
+      componentController.background!!,
+      componentController.directionKey!!,
+      componentController.textBoard!!,
+      componentController.npcs!!
   );
+  motionController.initialize();
 };
 
 /**

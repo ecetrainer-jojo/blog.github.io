@@ -21,6 +21,11 @@
  */
 import { Direction } from '../MotionControl/Direction';
 import { ComponentConstants as constant } from '../ComponentControl/ComponentConstants';
+import frontWalkImg from '../img/FrontWalk.png'
+import backWalkImg from '../img/BackWalk.png'
+import leftWalkImg from '../img/LeftWalk.png'
+import rightWalkImg from '../img/RightWalk.png'
+import loadImage from "../Util/imageUtil";
 
 const CANVAS_UNIT = 32;
 
@@ -57,11 +62,18 @@ export class Character {
 
   mapY: number;
 
-  constructor(xPos:number, yPos:number, imageElement:HTMLImageElement) {
+  // walking images
+  frontWalkImg: HTMLImageElement | undefined;
+  backWalkImg: HTMLImageElement | undefined;
+  leftWalkImg: HTMLImageElement | undefined;
+  rightWalkImg: HTMLImageElement | undefined;
+
+
+  constructor(xPos:number, yPos:number, imageElement: HTMLImageElement) {
+    console.log("entering the character initialization")
     this.enableWalk = false;
     this.xPos = xPos;
     this.yPos = yPos;
-    this.imageElement = imageElement;
     this.direction = Direction.Down;
     this.originX = xPos;
     this.originY = yPos;
@@ -71,20 +83,28 @@ export class Character {
     // eslint-disable-next-line no-mixed-operators
     this.mapX = -1 * constant.INIT_PALLET_X / 32 + this.xPos / 32;
     this.mapY = -1 * constant.INIT_PALLET_Y / 32 + this.yPos / 32;
+    this.imageElement = imageElement
+  }
+
+  async initialize(){
+    this.frontWalkImg = await loadImage(frontWalkImg)
+    this.backWalkImg = await loadImage(backWalkImg);
+    this.leftWalkImg = await loadImage(leftWalkImg);
+    this.rightWalkImg = await loadImage(rightWalkImg);
   }
 
   draw = (canvasCxt:CanvasRenderingContext2D) => {
     canvasCxt.drawImage(
-      this.imageElement,
+      this.imageElement!!,
       // eslint-disable-next-line no-mixed-operators
-      this.currFrame * this.imageElement.width / this.frameNum,
+      this.currFrame * this.imageElement!!.width / this.frameNum,
       0,
-      this.imageElement.width / this.frameNum,
-      this.imageElement.height,
+      this.imageElement!!.width / this.frameNum,
+      this.imageElement!!.height,
       this.xPos,
       this.yPos,
-      this.imageElement.width / this.frameNum,
-      this.imageElement.height,
+      this.imageElement!!.width / this.frameNum,
+      this.imageElement!!.height,
     );
     // accumulate the frame
     this.frameControl();
@@ -118,16 +138,16 @@ export class Character {
     // please put them into constants
     switch (direction) {
       case (Direction.Up):
-        this.imageElement.src = 'img/BackWalk.png';
+        this.imageElement = this.backWalkImg!!
         break;
       case (Direction.Down):
-        this.imageElement.src = 'img/FrontWalk.png';
+        this.imageElement = this.frontWalkImg!!
         break;
       case (Direction.Left):
-        this.imageElement.src = 'img/LeftWalk.png';
+        this.imageElement = this.leftWalkImg!!
         break;
       case (Direction.Right):
-        this.imageElement.src = 'img/RightWalk.png';
+        this.imageElement = this.rightWalkImg!!
         break;
       default:
     }

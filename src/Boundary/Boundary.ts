@@ -1,5 +1,0 @@
-// class Boundary{
-//     constructor({position}){
-
-//     }
-// }

@@ -5,7 +5,10 @@ import { TextBoard } from '../TextBoard';
 import { ComponentConstants as constant } from './ComponentConstants';
 import loadImage from '../Util/imageUtil';
 import { NPC } from '../Character/NPC';
-
+import palletTownImg from '../img/PalletTown.png'
+import characterImg from '../img/FrontWalk.png'
+import dialogueImg from '../img/dialogue-box.png'
+import arrowKeyImg from '../img/controllerKey.png'
 /**
  * The ComponentController class orchestrates the initialization and animation
  * of various game components - Background, Character, DirectionKey, and TextBoard.
@@ -29,62 +32,71 @@ import { NPC } from '../Character/NPC';
 export class ComponentController {
   canvasCxt:CanvasRenderingContext2D;
 
-  background:Background;
+  background:Background | undefined;
 
-  character:Character;
+  character: Character | undefined;
 
-  directionKey:DirectionKey;
+  directionKey: DirectionKey | undefined;
 
-  textBoard:TextBoard;
+  textBoard: TextBoard | undefined;
 
-  npcs: NPC[];
+  npcs: NPC[] | undefined;
 
   constructor() {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    // @ts-ignore
     this.canvasCxt = document.querySelector('canvas').getContext('2d')!;
+    console.log("constructor called")
   }
 
   initialize = async () => {
+    console.log("entering the component controller initialization")
+
     this.background = new Background(
-      constant.INIT_PALLET_X,
-      constant.INIT_PALLET_Y,
-      await loadImage(constant.DEFAULT_BACKGROUND_IMG),
-      constant.PALLET_TOWN_RESOURCE,
+        constant.INIT_PALLET_X,
+        constant.INIT_PALLET_Y,
+        await loadImage(palletTownImg),
+        constant.PALLET_TOWN_RESOURCE,
     );
 
     this.character = new Character(
       constant.INIT_CHARACTER_X,
       constant.INIT_CHARACTER_Y,
-      await loadImage(constant.DEFAULT_CHARACTER_IMG),
+        await loadImage(characterImg)
     );
+
+    await this.character.initialize()
 
     this.npcs = [new NPC(
       'Test',
       10 * 32,
       15 * 32,
-      await loadImage(constant.DEFAULT_CHARACTER_IMG),
+        await loadImage(characterImg)
     )];
+
+    this.npcs.forEach(npc=> npc.initialize())
 
     this.directionKey = new DirectionKey(
       constant.INIT_DIRECTION_KEY_X,
       constant.INIT_DIRECTION_KEY_Y,
-      await loadImage(constant.DEFAULT_ARROW_KEY_IMG),
+      await loadImage(arrowKeyImg),
     );
 
     this.textBoard = new TextBoard(
-      await loadImage(constant.DEFAULT_DIALOG_IMG),
+      await loadImage(dialogueImg),
       this.canvasCxt,
     );
+
     this.animate();
+    console.log("component control initialized successfully")
   };
 
   // rendering out the pictures
   animate = () => {
     window.requestAnimationFrame(this.animate);
-    this.background.draw(this.canvasCxt);
-    this.character.draw(this.canvasCxt);
-    this.directionKey.draw(this.canvasCxt);
-    this.textBoard.draw();
-    this.npcs.forEach(((npc) => npc.draw(this.canvasCxt)));
+    this.background?.draw(this.canvasCxt);
+    this.character?.draw(this.canvasCxt);
+    this.directionKey?.draw(this.canvasCxt);
+    this.textBoard?.draw();
+    this.npcs?.forEach(((npc) => npc.draw(this.canvasCxt)));
   };
 }

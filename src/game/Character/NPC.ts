@@ -11,12 +11,13 @@ export class NPC extends Character {
     name: string,
     xPos: number,
     yPos: number,
-    imageElement: HTMLImageElement,
+    imageElement: HTMLImageElement
   ) {
     // so it is used to call the Character constructor from within NPC constructor.
     super(xPos, yPos, imageElement);
     // NPC specific property initialization
     this.name = name;
+    this.intervalId = 0;
   }
 
   // For the NPC no need to shift through their perspective

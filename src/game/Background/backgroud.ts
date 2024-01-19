@@ -174,6 +174,7 @@ export default class Background {
     imageElement:HTMLImageElement,
     backgroundMapInfo:Record<string, unknown>,
   ) {
+    console.log("entering the background initialization")
     this.xPos = xPos;
     this.yPos = yPos;
     this.imageElement = imageElement;

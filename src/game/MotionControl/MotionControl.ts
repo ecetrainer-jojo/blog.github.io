@@ -36,15 +36,31 @@ import Background from '../Background/backgroud';
 export default class MotionController {
   enable:boolean;
 
-  character:Character;
+  character: Character;
 
-  directionKey:DirectionKey;
+  directionKey: DirectionKey;
 
-  background:Background;
+  background: Background;
 
-  textBoard:TextBoard;
+  textBoard: TextBoard;
 
   npcs: NPC[];
+
+
+  constructor(character:Character,
+              background:Background,
+              directionKey:DirectionKey,
+              textBoard: TextBoard,
+              npcs:NPC[],) {
+    // control the on/off event listener
+    this.enable = true;
+    // get the required element
+    this.character = character;
+    this.background = background;
+    this.directionKey = directionKey;
+    this.textBoard = textBoard;
+    this.npcs = npcs;
+  }
 
   backgroundAction:Record<string, boolean> = {
     up: true,
@@ -60,7 +76,7 @@ export default class MotionController {
 
   // vision control for moving character and background, from perspective of character
   moveUp = () => {
-    this.character.changeDirection(Direction.Up);
+    this.character?.changeDirection(Direction.Up);
     const currCharacterMapX = this.character.mapX;
     const currCharacterMapY = this.character.mapY;
     // check whether any dialogue will be triggered
@@ -141,6 +157,7 @@ export default class MotionController {
   };
 
   initializeMouseTracker() {
+    // @ts-ignore
     document.querySelector('canvas').addEventListener('mousedown', (event) => {
       if (!this.enable) return;
       switch (this.directionKey.checkKey(event.clientX, event.clientY)) {
@@ -241,10 +258,6 @@ export default class MotionController {
     return false;
   };
 
-  constructor() {
-    this.enable = true;
-  }
-
   /**
    * Launches the NPC by setting an interval for NPC movement.
    *
@@ -307,27 +320,12 @@ export default class MotionController {
     setMovingInterval(); // Initialize the first timeout
   }
 
-  initialize(
-    character:Character,
-    background:Background,
-    directionKey:DirectionKey,
-    textBoard: TextBoard,
-    npcs:NPC[],
-  ) {
-    // control the on/off event listener
-    this.enable = true;
-    // get the required element
-    this.character = character;
-    this.background = background;
-    this.directionKey = directionKey;
-    this.textBoard = textBoard;
-    this.npcs = npcs;
-
+  initialize() {
     // start the event listener for keypressing
     this.initializeListener();
     this.initializeMouseTracker();
 
     // start launching npcs
-    npcs.forEach((npc) => this.npcLaunch(npc));
+    this.npcs.forEach((npc) => this.npcLaunch(npc));
   }
 }
