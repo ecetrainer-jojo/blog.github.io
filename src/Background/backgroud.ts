@@ -127,24 +127,6 @@ export default class Background {
     return false;
   };
 
-  // const currCharacterMapX = this.character.mapX;
-  // const currCharacterMapY = this.character.mapY;
-  // // eslint-disable-next-line default-case
-  // switch (this.character.direction) {
-  //   case Direction.Up:
-  //     this.checkDialogueHandler(currCharacterMapX, currCharacterMapY - 2);
-  //     break;
-  //   case Direction.Down:
-  //     this.checkDialogueHandler(currCharacterMapX, currCharacterMapY + 2);
-  //     break;
-  //   case Direction.Left:
-  //     this.checkDialogueHandler(currCharacterMapX - 2, currCharacterMapY);
-  //     break;
-  //   case Direction.Right:
-  //     this.checkDialogueHandler(currCharacterMapX + 2, currCharacterMapY);
-  //     break;
-  // }
-
   /**
    * Searches for a key in a dialogue map that matches the given coordinates.
    * @param {number} currX - The current x-coordinate to match.
@@ -157,7 +139,7 @@ export default class Background {
   checkDialogue = (currX:number, currY:number, direction: string): number | null => {
     console.log('start checking dialogue for boundary');
     console.log(currX, currY, direction);
-    let resultKey = null
+    let resultKey = null;
     this.dialogueMap.forEach((value, key) => {
       for (let i = 0; i < value.length; i += 1) {
         let checkBoundaryDialogueResult = false;
@@ -179,8 +161,8 @@ export default class Background {
           default:
             break;
         }
-        console.log(checkBoundaryDialogueResult)
-        if (checkBoundaryDialogueResult) resultKey = key
+        console.log(checkBoundaryDialogueResult);
+        if (checkBoundaryDialogueResult) resultKey = key;
       }
     });
     return resultKey;

@@ -181,10 +181,10 @@ export default class MotionController {
         } else {
           console.log('Dialogue start');
           this.checkDialogueHandler(
-              this.character.mapX,
-              this.character.mapY,
-              this.character.direction
-              )
+            this.character.mapX,
+            this.character.mapY,
+            this.character.direction,
+          );
           // const currCharacterMapX = this.character.mapX;
           // const currCharacterMapY = this.character.mapY;
           // // eslint-disable-next-line default-case
@@ -223,8 +223,8 @@ export default class MotionController {
 
   checkDialogueHandler = (currX:number, currY:number, direction: string) => {
     const checkDialogueResult = this.background.checkDialogue(currX, currY, direction);
-    console.log("checkDialogueHandler")
-    console.log(checkDialogueResult)
+    console.log('checkDialogueHandler');
+    console.log(checkDialogueResult);
     if (checkDialogueResult != null) {
       this.textBoard.setInputText('Welcome to this Town. Please enjoy your time here and get to know more about me! Welcome to this Town. Please enjoy your time here and get to know more about me! Welcome to this Town. Please enjoy your time here and get to know more about me! Welcome to this Town. Please enjoy your time here and get to know more about me!');
       this.disable();
