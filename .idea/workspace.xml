@@ -5,67 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a9a661c0-75a1-4f23-a115-ad4d6b2830ed" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.eslintignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.eslintrc.cjs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/__tests__/boundaryLoad.test.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/bundle.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/main.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/BackStand.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/BackWalk.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/FrontStand.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/FrontWalk.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/LeftStand.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/LeftWalk.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/PalletTown.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/RightStand.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/RightWalk.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/controllerKey.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/dialogue-box.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/pokemonMap.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/jest.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Characters_V3_Colour.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/button prompts layout.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/character.tmx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/dialog tile.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/dialog tileset.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/font/bit_style.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/tile_assets/Dialogue/dialogue.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/tile_assets/Dialogue/pure_yellow_32x32.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/tile_assets/collision/collision.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/tile_assets/collision/collision.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/tile_assets/collision/pure_red_32x32.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/tile_assets/towns/PalletTownMap.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/tile_assets/towns/PalletTownMap.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/tile_assets/towns/PalletTownMap.tmx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/tile_assets/towns/PalletTownTile32.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/tile_assets/towns/palletTown.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Background/backgroud.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Boundary/Boundary.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Character/Character.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Character/NPC.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ComponentControl/ComponentConstants.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ComponentControl/ComponentControl.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DirectionalKey/DirectionKey.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Models/mapLayer.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MotionControl/Direction.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MotionControl/MotionControl.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TextBoard.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Util/imageUtil.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Util/pointUtil.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Util/timeUtil.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/constants.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mainCanvas.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/style.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpack.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn-error.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +56,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1705682381904</updated>
-      <workItem from="1705682383933" duration="818000" />
+      <workItem from="1705682383933" duration="4195000" />
     </task>
     <servers />
   </component>
