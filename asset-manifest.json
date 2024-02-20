@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/static/css/main.8c7c4714.css",
-    "main.js": "/static/js/main.b85c532e.js",
+    "main.css": "/static/css/main.e7a32511.css",
+    "main.js": "/static/js/main.609b7881.js",
     "static/js/787.d4aba7ab.chunk.js": "/static/js/787.d4aba7ab.chunk.js",
     "static/media/bit_style.ttf": "/static/media/bit_style.69fd3db14fbc8b3f7cdb.ttf",
     "static/media/PalletTown.png": "/static/media/PalletTown.91ce6af14f004f17975a.png",
     "static/media/dialogue-box.png": "/static/media/dialogue-box.43c70d83ee0d61d00f71.png",
     "index.html": "/index.html",
-    "main.8c7c4714.css.map": "/static/css/main.8c7c4714.css.map",
-    "main.b85c532e.js.map": "/static/js/main.b85c532e.js.map",
+    "main.e7a32511.css.map": "/static/css/main.e7a32511.css.map",
+    "main.609b7881.js.map": "/static/js/main.609b7881.js.map",
     "787.d4aba7ab.chunk.js.map": "/static/js/787.d4aba7ab.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.8c7c4714.css",
-    "static/js/main.b85c532e.js"
+    "static/css/main.e7a32511.css",
+    "static/js/main.609b7881.js"
   ]
 }
