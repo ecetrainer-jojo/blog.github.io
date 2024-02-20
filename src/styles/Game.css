@@ -1,0 +1,23 @@
+@font-face {
+    font-family: 'PixelFont';
+    src: url('../game/resources/font/bit_style.ttf') format('truetype');
+}
+
+.game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.game .main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+}
+
+.game canvas {
+    margin: 10px;
+}

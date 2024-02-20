@@ -1,0 +1,36 @@
+.navbar {
+    height: 44px;
+    width: 100vw;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: #161617CC;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    transition: all 0.3s;
+}
+
+@media (min-width: 769px) {
+    .navbar {
+        display: none;
+    }
+}
+
+.navbar a {
+    color: rgba(255, 255, 255, .8);
+    text-decoration: none;
+    font-size: 1.2rem;
+    padding: 10px;
+    transition: color 0.3s ease;
+}
+
+.navbar a.active {
+    color: #4CAF50;
+}
+
+.navbar a:not(.active):hover {
+    color: rgba(255, 255, 255, .92);
+}
